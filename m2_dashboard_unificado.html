@@ -1,0 +1,828 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#070C18;--surf:#0F1623;--surf2:#151E2D;--surf3:#1A2438;
+  --bdr:#1C2B42;--bdr2:#243550;
+  --txt:#EEF2FF;--muted:#5B7193;--dim:#3A4E6A;
+  --acc:#3B7BF6;--grn:#0EA271;--red:#E53E3E;--amb:#D97706;--gld:#C8952E;
+  --tel:#0891B2;--pur:#7C3AED;--rose:#BE185D;
+}
+body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;font-size:12px;min-height:100vh;}
+
+/* ── LAYOUT ── */
+.app{display:flex;height:100vh;min-height:720px;}
+.sidebar{width:210px;background:var(--surf);border-right:1px solid var(--bdr);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto;}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{padding:11px 20px;border-bottom:1px solid var(--bdr);background:var(--surf);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.content{flex:1;overflow-y:auto;padding:16px 20px;}
+.page{display:none;}
+.page.active{display:block;}
+
+/* ── SIDEBAR ── */
+.logo-area{padding:18px 16px 14px;border-bottom:1px solid var(--bdr);}
+.logo-main{font-family:'DM Serif Display',serif;font-size:17px;color:var(--gld);line-height:1.1;}
+.logo-sub{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:3px;}
+.nav-section{padding:10px 0 4px;}
+.nav-label{padding:4px 16px 6px;font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;cursor:pointer;color:var(--muted);font-size:11px;border-left:2px solid transparent;transition:all .12s;position:relative;}
+.ni:hover{color:var(--txt);background:var(--surf2);}
+.ni.active{color:var(--acc);border-left-color:var(--acc);background:rgba(59,123,246,.08);}
+.ni-ic{width:14px;height:14px;flex-shrink:0;opacity:.7;}
+.ni.active .ni-ic{opacity:1;}
+.nb{font-size:8px;padding:1px 5px;border-radius:8px;margin-left:auto;font-weight:600;}
+.nb-r{background:rgba(229,62,62,.2);color:#F87171;}
+.nb-a{background:rgba(217,119,6,.2);color:#FCD34D;}
+.nb-g{background:rgba(14,162,113,.2);color:#34D399;}
+.nb-b{background:rgba(59,123,246,.2);color:#93C5FD;}
+.sidebar-footer{padding:12px 16px;margin-top:auto;border-top:1px solid var(--bdr);}
+.sf-line{font-size:9px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-bottom:3px;}
+.sf-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+
+/* ── TOPBAR ── */
+.tb-left{display:flex;flex-direction:column;}
+.tb-title{font-family:'DM Serif Display',serif;font-size:15px;}
+.tb-sub{font-size:9px;color:var(--muted);margin-top:1px;}
+.tb-right{display:flex;gap:7px;align-items:center;}
+.btn{padding:5px 12px;border-radius:5px;font-size:10px;cursor:pointer;border:1px solid var(--bdr2);background:var(--surf2);color:var(--txt);font-family:'DM Sans',sans-serif;transition:all .1s;}
+.btn:hover{background:var(--surf3);}
+.btn-acc{background:var(--acc);border-color:var(--acc);color:#fff;}
+.btn-grn{background:rgba(14,162,113,.15);border-color:rgba(14,162,113,.3);color:var(--grn);}
+select.btn{cursor:pointer;padding-right:8px;}
+
+/* ── ALERT STRIP ── */
+.alert-strip{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.alert{display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:6px;font-size:10px;flex:1;min-width:200px;}
+.alert-r{background:rgba(229,62,62,.08);border:1px solid rgba(229,62,62,.2);}
+.alert-a{background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.2);}
+.alert-g{background:rgba(14,162,113,.08);border:1px solid rgba(14,162,113,.2);}
+.alert-b{background:rgba(59,123,246,.08);border:1px solid rgba(59,123,246,.2);}
+.adot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.atag{font-size:8px;padding:2px 7px;border-radius:8px;background:var(--surf3);margin-left:auto;white-space:nowrap;}
+
+/* ── KPI GRID ── */
+.kg{display:grid;gap:9px;margin-bottom:14px;}
+.kg5{grid-template-columns:repeat(5,1fr);}
+.kg4{grid-template-columns:repeat(4,1fr);}
+.kg3{grid-template-columns:repeat(3,1fr);}
+.kg2{grid-template-columns:repeat(2,1fr);}
+.kpi{background:var(--surf);border:1px solid var(--bdr);border-radius:8px;padding:12px 14px;position:relative;overflow:hidden;}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.k-acc::before{background:var(--acc);}
+.k-grn::before{background:var(--grn);}
+.k-red::before{background:var(--red);}
+.k-amb::before{background:var(--amb);}
+.k-gld::before{background:var(--gld);}
+.k-tel::before{background:var(--tel);}
+.k-pur::before{background:var(--pur);}
+.k-rose::before{background:var(--rose);}
+.kl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
+.kv{font-size:19px;font-weight:600;line-height:1;margin-bottom:3px;}
+.ks{font-size:9px;color:var(--muted);line-height:1.4;}
+.kd{display:inline-block;font-size:9px;padding:1px 6px;border-radius:3px;margin-top:4px;}
+.kd-u{background:rgba(14,162,113,.12);color:var(--grn);}
+.kd-d{background:rgba(229,62,62,.12);color:var(--red);}
+.kd-n{background:rgba(59,123,246,.12);color:var(--acc);}
+
+/* ── CARDS ── */
+.card{background:var(--surf);border:1px solid var(--bdr);border-radius:8px;padding:14px;margin-bottom:12px;}
+.card-t{font-size:12px;font-weight:500;margin-bottom:2px;}
+.card-s{font-size:9px;color:var(--muted);margin-bottom:12px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;}
+
+/* ── PROP CARDS ── */
+.prop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.prop-card{background:var(--surf);border:1px solid var(--bdr);border-radius:9px;padding:14px;cursor:pointer;transition:all .12s;position:relative;}
+.prop-card:hover{border-color:var(--acc);background:var(--surf2);}
+.prop-card.active-prop{border-color:var(--acc);background:rgba(59,123,246,.06);}
+.prop-num{font-size:13px;font-weight:600;color:var(--acc);margin-bottom:5px;}
+.prop-name{font-size:12px;font-weight:500;margin-bottom:3px;}
+.prop-loc{font-size:9px;color:var(--muted);margin-bottom:8px;}
+.prop-kpis{display:flex;gap:10px;}
+.prop-k{font-size:9px;text-align:center;}
+.prop-kv{font-size:14px;font-weight:600;line-height:1.2;}
+.prop-alert{position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%;}
+
+/* ── INFO BOXES ── */
+.ib{background:rgba(59,123,246,.07);border:1px solid rgba(59,123,246,.2);border-radius:6px;padding:9px 12px;margin-bottom:12px;font-size:10px;color:var(--muted);line-height:1.6;}
+.ib strong{color:var(--acc);}
+.wb{background:rgba(217,119,6,.07);border:1px solid rgba(217,119,6,.2);border-radius:6px;padding:9px 12px;margin-bottom:12px;font-size:10px;color:var(--amb);line-height:1.6;}
+.rb{background:rgba(229,62,62,.07);border:1px solid rgba(229,62,62,.2);border-radius:6px;padding:9px 12px;margin-bottom:12px;font-size:10px;color:var(--red);line-height:1.6;}
+
+/* ── TABLES ── */
+.tbl-w{background:var(--surf);border:1px solid var(--bdr);border-radius:8px;padding:14px;margin-bottom:12px;}
+.thl{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px;}
+.sec-t{font-size:11px;font-weight:500;border-left:2px solid var(--acc);padding-left:8px;}
+.sec-t.g{border-left-color:var(--grn);}
+.sec-t.a{border-left-color:var(--amb);}
+.srch{background:var(--surf2);border:1px solid var(--bdr2);border-radius:4px;padding:4px 8px;color:var(--txt);font-size:9px;width:150px;}
+.srch::placeholder{color:var(--muted);}
+table{width:100%;border-collapse:collapse;font-size:9px;}
+th{text-align:left;padding:6px 8px;color:var(--muted);font-weight:400;font-size:8px;text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--bdr);}
+td{padding:6px 8px;border-bottom:1px solid rgba(28,43,66,.5);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--surf2);}
+.badge{padding:2px 6px;border-radius:3px;font-size:8px;font-weight:500;}
+.bg{background:rgba(14,162,113,.12);color:var(--grn);}
+.br{background:rgba(229,62,62,.12);color:var(--red);}
+.ba{background:rgba(217,119,6,.12);color:var(--amb);}
+.bb{background:rgba(59,123,246,.12);color:var(--acc);}
+.bt{background:rgba(8,145,178,.12);color:var(--tel);}
+.bn{background:var(--surf3);color:var(--muted);}
+
+/* ── BARS ── */
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.bar-lbl{font-size:9px;color:var(--muted);flex-shrink:0;}
+.bar-track{flex:1;background:var(--surf3);border-radius:3px;height:7px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:3px;}
+.bar-val{font-size:9px;font-weight:500;text-align:right;flex-shrink:0;}
+
+/* ── MONTH BADGE ── */
+.mes-row td:first-child{border-top:1px solid var(--bdr2);}
+.mes-hdr{background:var(--surf2);font-weight:600;font-size:9px;}
+.mes-hdr td{padding:5px 8px;color:var(--acc);}
+
+/* ── PROG RING ── */
+.ring-wrap{display:flex;align-items:center;gap:14px;}
+.ring-info{display:flex;flex-direction:column;gap:5px;}
+.ring-item{font-size:10px;display:flex;align-items:center;gap:6px;}
+.ring-dot{width:8px;height:8px;border-radius:50%;}
+
+/* ── INPC TOGGLE ── */
+.tog-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.tog{padding:3px 10px;border-radius:10px;border:1px solid var(--bdr2);font-size:9px;color:var(--muted);cursor:pointer;background:var(--surf2);transition:all .1s;}
+.tog.on{color:#fff;border-color:transparent;}
+.t-ene.on{background:rgba(59,123,246,.6);}
+.t-mar.on{background:rgba(14,162,113,.6);}
+.t-abr.on{background:rgba(217,119,6,.6);}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:2px;}
+</style>
+
+<div class="app">
+
+<!-- ════════════ SIDEBAR ════════════ -->
+<div class="sidebar">
+  <div class="logo-area">
+    <div class="logo-main">M2 · Portafolio</div>
+    <div class="logo-sub">Administración de Bienes Inmuebles</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Principal</div>
+    <div class="ni active" onclick="nav(this,'inicio')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+      Inicio
+    </div>
+    <div class="ni" onclick="nav(this,'resumen')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Resumen Ejecutivo
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Cobranza</div>
+    <div class="ni" onclick="nav(this,'cobranza')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      Cobranza <span class="nb nb-r">4 alertas</span>
+    </div>
+    <div class="ni" onclick="nav(this,'facturas')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Facturas <span class="nb nb-a">2 pend.</span>
+    </div>
+    <div class="ni" onclick="nav(this,'estados')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      Estados de Cuenta
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Análisis</div>
+    <div class="ni" onclick="nav(this,'inpc')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      INPC Aumentos <span class="nb nb-a">46</span>
+    </div>
+    <div class="ni" onclick="nav(this,'rentroll')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Rent Roll <span class="nb nb-r">27</span>
+    </div>
+    <div class="ni" onclick="nav(this,'presgas')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Pres. vs Gastos
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Propiedades</div>
+    <div class="ni" onclick="nav(this,'asturimart')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+      Asturimart <span class="nb nb-r">3</span>
+    </div>
+    <div class="ni" onclick="nav(this,'fvc')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+      FVC <span class="nb nb-r">!</span>
+    </div>
+    <div class="ni" onclick="nav(this,'pi')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      Parque Industrial
+    </div>
+    <div class="ni" onclick="nav(this,'cuu')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      CUU · Chihuahua
+    </div>
+    <div class="ni" onclick="nav(this,'montes')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Montes Urales 415
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Sistema</div>
+    <div class="ni" onclick="nav(this,'clientes')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      Núm. Clientes
+    </div>
+    <div class="ni" onclick="nav(this,'compartir')">
+      <svg class="ni-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      Compartir online <span class="nb nb-g">✓</span>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="sf-line"><div class="sf-dot" style="background:var(--grn)"></div>Sistema activo · 16 Abr 2026</div>
+    <div class="sf-line"><div class="sf-dot" style="background:var(--acc)"></div>Mes abierto — abril en plazo</div>
+  </div>
+</div>
+
+<!-- ════════════ MAIN ════════════ -->
+<div class="main">
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="tb-title" id="pgt">Portafolio M2 — Inicio</div>
+      <div class="tb-sub" id="pgs">5 propiedades · 106 locatarios · Mes corriente Abril 2026 (abierto — dentro de plazo)</div>
+    </div>
+    <div class="tb-right">
+      <select class="btn" onchange="filterProp(this.value)">
+        <option value="all">Todas las propiedades</option>
+        <option value="asturimart">Asturimart</option>
+        <option value="fvc">FVC</option>
+        <option value="pi">Parque Industrial</option>
+        <option value="cuu">CUU</option>
+        <option value="montes">Montes Urales</option>
+      </select>
+      <button class="btn btn-grn" onclick="nav(document.querySelectorAll('.ni')[17],'compartir')">Compartir ↗</button>
+      <button class="btn btn-acc">PDF</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══════ INICIO ══════ -->
+    <div class="page active" id="pg-inicio">
+      <div class="alert-strip">
+        <div class="alert alert-r"><div class="adot" style="background:var(--red)"></div><div><strong>4 vencidos reales:</strong> BELLEKI+ALORI+VAPE (Asturimart) y UMBRELLA HOTEL (FVC) — meses cerrados sin pago.</div><div class="atag">Acción urgente</div></div>
+        <div class="alert alert-b"><div class="adot" style="background:var(--acc)"></div><div><strong>Abril en plazo:</strong> pagos pendientes del mes activo no son cartera vencida — se clasificarán al cierre del mes.</div><div class="atag">Dentro de plazo</div></div>
+        <div class="alert alert-g"><div class="adot" style="background:var(--grn)"></div><div><strong>$4.45M adicionales/año</strong> por aumentos INPC aplicados en Ene-Mar-Abr 2026.</div><div class="atag">Favorable</div></div>
+      </div>
+
+      <div class="kg kg5">
+        <div class="kpi k-gld"><div class="kl">Cartera total/mes</div><div class="kv" style="color:var(--gld)">$31.1M</div><div class="ks">5 propiedades</div><div class="kd kd-u">+INPC $371K</div></div>
+        <div class="kpi k-grn"><div class="kl">Rec. real ENE–MAR</div><div class="kv" style="color:var(--grn)">94.2%</div><div class="ks">Meses cerrados</div><div class="kd kd-u">Sin FVC: 99.8%</div></div>
+        <div class="kpi k-red"><div class="kl">Adeudo real total</div><div class="kv" style="color:var(--red)">$3.82M</div><div class="ks">Meses cerrados</div><div class="kd kd-d">4 locatarios</div></div>
+        <div class="kpi k-acc"><div class="kl">Contratos vigentes</div><div class="kv" style="color:var(--acc)">89+</div><div class="ks">Cielo Abierto + portafolio</div><div class="kd kd-n">27 alertas venc.</div></div>
+        <div class="kpi k-tel"><div class="kl">INPC dif. acum./año</div><div class="kv" style="color:var(--tel)">$4.45M</div><div class="ks">Ene+Mar+Abr 2026</div><div class="kd kd-u">46 locatarios</div></div>
+      </div>
+
+      <div class="prop-grid">
+        <div class="prop-card" onclick="nav(document.querySelectorAll('.ni')[8],'asturimart')">
+          <div class="prop-alert" style="background:var(--red)"></div>
+          <div class="prop-num">01 · Asturimart</div>
+          <div class="prop-name">La Estación + Cielo Abierto</div>
+          <div class="prop-loc">CDMX · 89 contratos comerciales</div>
+          <div class="prop-kpis">
+            <div class="prop-k"><div class="prop-kv" style="color:var(--grn)">99.7%</div><div style="font-size:8px;color:var(--muted)">Rec ENE-MAR</div></div>
+            <div class="prop-k"><div class="prop-kv" style="color:var(--red)">3</div><div style="font-size:8px;color:var(--muted)">Vencidos</div></div>
+            <div class="prop-k"><div class="prop-kv" style="color:var(--gld)">$9.48M</div><div style="font-size:8px;color:var(--muted)">/mes</div></div>
+          </div>
+        </div>
+        <div class="prop-card" onclick="nav(document.querySelectorAll('.ni')[9],'fvc')">
+          <div class="prop-alert" style="background:var(--red)"></div>
+          <div class="prop-num">02 · FVC</div>
+          <div class="prop-name">Fideicomiso Venustiano Carranza</div>
+          <div class="prop-loc">CDMX · Hotel + Locales · C/2217</div>
+          <div class="prop-kpis">
+            <div class="prop-k"><div class="prop-kv" style="color:var(--red)">28%</div><div style="font-size:8px;color:var(--muted)">Rec ENE-MAR</div></div>
+            <div class="prop-k"><div class="prop-kv" style="color:var(--red)">$2.84M</div><div style="font-size:8px;color:var(--muted)">Adeudo</div></div>
+            <div class="prop-k"><div class="prop-kv" style="color:var(--gld)">$1.30M</div><div style="font-size:8px;color:var(--muted)">/mes</div></div>
+          </div>
+        </div>
+        <div class="prop-card" onclick="nav(document.querySelectorAll('.ni')[10],'pi')">
+          <div class="prop-alert" style="background:var(--amb)"></div>
+          <div class="prop-num">03 · Parque Industrial</div>
+          <div class="prop-name">Parque Industrial M2</div>
+          <div class="prop-loc">TJ · CDMX · Sureste · 22 inquilinos</div>
+          <div class="prop-kpis">
+            <div class="prop-k"><div class="prop-kv" style="color:var(--grn)">99.8%</div><div style="font-size:8px;color:var(--muted)">Rec ENE-MAR</div></div>
+            <div class="prop-k"><div class="prop-kv" style="color:var(--amb)">$866K</div><div style="font-size:8px;color:var(--muted)">Adeudo parc.</div></div>
+            <div class="prop-k"><div class="prop-kv" style="color:var(--gld)">$19.8M</div><div style="font-size:8px;color:var(--muted)">/mes</div></div>
+          </div>
+        </div>
+        <div class="prop-card" onclick="nav(document.querySelectorAll('.ni')[11],'cuu')">
+          <div class="prop-alert" style="background:var(--grn)"></div>
+          <div class="prop-num">04–05 · CUU</div>
+          <div class="prop-name">Chihuahua — 2 propiedades</div>
+          <div class="prop-loc">Chihuahua · 13 locatarios activos</div>
+          <div class="prop-kpis">
+            <div class="prop-k"><div class="prop-kv" style="color:var(--grn)">100%</div><div style="font-size:8px;color:var(--muted)">Rec ENE-MAR</div></div>
+            <div class="prop-k"><div class="prop-kv" style="color:var(--grn)">$0</div><div style="font-size:8px;color:var(--muted)">Adeudo</div></div>
+            <div class="prop-k"><div class="prop-kv" style="color:var(--gld)">$568K</div><div style="font-size:8px;color:var(--muted)">/mes</div></div>
+          </div>
+        </div>
+        <div class="prop-card" onclick="nav(document.querySelectorAll('.ni')[12],'montes')">
+          <div class="prop-alert" style="background:var(--grn)"></div>
+          <div class="prop-num">06 · Montes Urales</div>
+          <div class="prop-name">Montes Urales 415</div>
+          <div class="prop-loc">CDMX · Oficinas corporativas</div>
+          <div class="prop-kpis">
+            <div class="prop-k"><div class="prop-kv" style="color:var(--grn)">100%</div><div style="font-size:8px;color:var(--muted)">Rec ENE-MAR</div></div>
+            <div class="prop-k"><div class="prop-kv" style="color:var(--grn)">$0</div><div style="font-size:8px;color:var(--muted)">Adeudo</div></div>
+            <div class="prop-k"><div class="prop-kv" style="color:var(--gld)">$390K</div><div style="font-size:8px;color:var(--muted)">/mes est.</div></div>
+          </div>
+        </div>
+        <div class="prop-card" style="background:var(--surf2);border-style:dashed;cursor:default">
+          <div style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;opacity:.5;">
+            <div style="font-size:20px">+</div>
+            <div style="font-size:10px;color:var(--muted)">Agregar propiedad</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ RESUMEN EJECUTIVO ══════ -->
+    <div class="page" id="pg-resumen">
+      <div class="ib"><strong>Resumen Ejecutivo — Portafolio M2 · Abril 2026.</strong> Morosidad calculada <em>exclusivamente</em> sobre meses cerrados (ENE–MAR). Abril = mes activo, dentro de plazo. Los $3.82M de adeudo son de FVC (UMBRELLA), Parque Industrial (parciales) y Asturimart (3 locatarios).</div>
+      <div class="kg kg4">
+        <div class="kpi k-gld"><div class="kl">Cartera total / mes</div><div class="kv" style="color:var(--gld)">$31.1M</div><div class="ks">Presupuesto mensual 5 prop.</div><div class="kd kd-u">+$371K INPC/mes</div></div>
+        <div class="kpi k-grn"><div class="kl">Cobrado ENE–MAR prom.</div><div class="kv" style="color:var(--grn)">94.2%</div><div class="ks">Sin FVC: 99.8% · Benchmark: 92%</div><div class="kd kd-u">Por encima del objetivo</div></div>
+        <div class="kpi k-red"><div class="kl">Adeudo real (cerrados)</div><div class="kv" style="color:var(--red)">$3.82M</div><div class="ks">FVC $2.84M · PI $866K · Ast $113K</div><div class="kd kd-d">Requiere gestión</div></div>
+        <div class="kpi k-acc"><div class="kl">Abril en plazo</div><div class="kv" style="color:var(--acc)">◷ Activo</div><div class="ks">No es cartera vencida</div><div class="kd kd-n">Cierre a fin de mes</div></div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-t">Cobranza mensual por propiedad</div>
+          <div class="card-s">ENE–MAR 2026 — meses cerrados</div>
+          <div id="cobr-prop-bars"></div>
+        </div>
+        <div class="card">
+          <div class="card-t">Composición del adeudo real</div>
+          <div class="card-s">$3.82M total meses cerrados</div>
+          <div id="adeudo-bars"></div>
+        </div>
+      </div>
+
+      <div class="tbl-w">
+        <div class="thl"><div class="sec-t">Comparativo ENE–MAR por propiedad</div></div>
+        <table>
+          <thead><tr><th>Propiedad</th><th>Pres./mes</th><th>ENE Real</th><th>FEB Real</th><th>MAR Real</th><th>% Rec.</th><th>Adeudo Real</th><th>Abril</th><th>INPC Dif./mes</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Asturimart</strong></td><td>$9.48M</td><td style="color:var(--grn)">$8.20M</td><td style="color:var(--grn)">$8.11M</td><td style="color:var(--grn)">$8.24M</td><td style="color:var(--grn);font-weight:600">99.7%</td><td style="color:var(--red)">$113K</td><td><span class="badge bb">◷ plazo</span></td><td style="color:var(--tel)">$17,239</td></tr>
+            <tr><td><strong>FVC</strong></td><td>$1.30M</td><td style="color:var(--red)">$358K</td><td style="color:var(--red)">$425K</td><td style="color:var(--red)">$420K</td><td style="color:var(--red);font-weight:600">28%</td><td style="color:var(--red);font-weight:600">$2.84M</td><td><span class="badge bb">◷ plazo</span></td><td style="color:var(--muted)">—</td></tr>
+            <tr><td><strong>Parque Industrial</strong></td><td>$19.8M</td><td style="color:var(--grn)">$19.78M</td><td style="color:var(--grn)">$19.73M</td><td style="color:var(--grn)">$19.80M</td><td style="color:var(--grn);font-weight:600">99.8%</td><td style="color:var(--amb)">$866K</td><td><span class="badge bb">◷ plazo</span></td><td style="color:var(--tel)">$213,712</td></tr>
+            <tr><td><strong>CUU (2 prop.)</strong></td><td>$568K</td><td style="color:var(--grn)">$571K</td><td style="color:var(--grn)">$571K</td><td style="color:var(--grn)">$578K</td><td style="color:var(--grn);font-weight:600">100.7%</td><td style="color:var(--grn)">$0</td><td><span class="badge bb">◷ plazo</span></td><td style="color:var(--tel)">$4,464</td></tr>
+            <tr><td><strong>Montes Urales 415</strong></td><td>$390K</td><td style="color:var(--grn)">$390K</td><td style="color:var(--grn)">$390K</td><td style="color:var(--grn)">$390K</td><td style="color:var(--grn);font-weight:600">100%</td><td style="color:var(--grn)">$0</td><td><span class="badge bb">◷ plazo</span></td><td style="color:var(--tel)">$41,956</td></tr>
+            <tr style="background:var(--surf2)"><td style="font-weight:600">TOTAL PORTAFOLIO</td><td style="font-weight:600;color:var(--gld)">$31.5M</td><td style="font-weight:600">$29.3M</td><td style="font-weight:600">$29.2M</td><td style="font-weight:600">$29.4M</td><td style="font-weight:600;color:var(--grn)">94.2%</td><td style="font-weight:600;color:var(--red)">$3.82M</td><td></td><td style="font-weight:600;color:var(--tel)">$277,371</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════ COBRANZA ══════ -->
+    <div class="page" id="pg-cobranza">
+      <div class="ib"><strong>Dashboard de cobranza consolidado.</strong> <strong style="color:var(--grn)">Regla de vencimiento:</strong> pagos del mes en curso (Abril 2026) = dentro de plazo, NO cartera vencida. Solo meses cerrados (ENE–MAR) sirven de base para clasificar morosidad y riesgo.</div>
+      <div class="kg kg4">
+        <div class="kpi k-grn"><div class="kl">Morosidad real</div><div class="kv" style="color:var(--grn)">0.4%</div><div class="ks">Sin contar FVC hotel</div></div>
+        <div class="kpi k-red"><div class="kl">Adeudo FVC (hotel)</div><div class="kv" style="color:var(--red)">$2.84M</div><div class="ks">UMBRELLA · 3 meses</div></div>
+        <div class="kpi k-acc"><div class="kl">Abril en plazo</div><div class="kv" style="color:var(--acc)">◷</div><div class="ks">No es riesgo aún</div></div>
+        <div class="kpi k-amb"><div class="kl">Parciales PI</div><div class="kv" style="color:var(--amb)">$866K</div><div class="ks">COSMÉTICOS + GAOQUI + TSI</div></div>
+      </div>
+      <div class="tbl-w">
+        <div class="thl"><div class="sec-t">Locatarios con adeudo real — meses cerrados únicamente</div><input class="srch" placeholder="Buscar..."></div>
+        <table>
+          <thead><tr><th>No. Cliente</th><th>Locatario</th><th>Propiedad</th><th>Local</th><th>ENE–MAR pagado</th><th>Adeudo real</th><th>Abril</th><th>Estado real</th><th>Riesgo</th></tr></thead>
+          <tbody>
+            <tr style="background:rgba(229,62,62,.05)"><td style="color:var(--red);font-weight:600">FVC-1004</td><td><strong>UMBRELLA HOTEL</strong></td><td>FVC</td><td>Hotel</td><td style="color:var(--red)">$0 los 3 meses</td><td style="color:var(--red);font-weight:600">$2,836,200</td><td><span class="badge bb">◷ plazo</span></td><td><span class="badge br">Vencido real</span></td><td><div style="width:80px;background:var(--surf3);border-radius:2px;height:5px;overflow:hidden"><div style="width:95%;height:100%;background:var(--red);border-radius:2px"></div></div></td></tr>
+            <tr style="background:rgba(229,62,62,.04)"><td style="color:var(--red);font-weight:600">CA-2012</td><td><strong>BELLEKI</strong></td><td>Cielo Abierto</td><td>GLA 20</td><td style="color:var(--red)">Feb: $0 · Mar: $0</td><td style="color:var(--red);font-weight:600">$87,000</td><td><span class="badge bb">◷ plazo</span></td><td><span class="badge br">Vencido real</span></td><td><div style="width:80px;background:var(--surf3);border-radius:2px;height:5px;overflow:hidden"><div style="width:80%;height:100%;background:var(--red);border-radius:2px"></div></div></td></tr>
+            <tr style="background:rgba(229,62,62,.04)"><td style="color:var(--red);font-weight:600">CA-2043</td><td><strong>PURO VAPE</strong></td><td>Cielo Abierto</td><td>SEN 8</td><td style="color:var(--red)">Ene-Feb: $0</td><td style="color:var(--red);font-weight:600">$13,189</td><td><span class="badge bb">◷ plazo</span></td><td><span class="badge br">Crítico +90d</span></td><td><div style="width:80px;background:var(--surf3);border-radius:2px;height:5px;overflow:hidden"><div style="width:85%;height:100%;background:var(--red);border-radius:2px"></div></div></td></tr>
+            <tr style="background:rgba(229,62,62,.04)"><td style="color:var(--red);font-weight:600">CA-2046</td><td><strong>ALORI</strong></td><td>Cielo Abierto</td><td>SEN 13</td><td style="color:var(--amb)">Ene: parcial</td><td style="color:var(--red);font-weight:600">$12,710</td><td><span class="badge bb">◷ plazo</span></td><td><span class="badge br">Vencido real</span></td><td><div style="width:80px;background:var(--surf3);border-radius:2px;height:5px;overflow:hidden"><div style="width:70%;height:100%;background:var(--red);border-radius:2px"></div></div></td></tr>
+            <tr><td style="color:var(--amb)">PI-1020</td><td>COSMÉTICOS MARAVILLA</td><td>Parque Industrial</td><td>Industrial</td><td style="color:var(--amb)">Parcial Feb-Mar</td><td style="color:var(--amb)">$311,332</td><td><span class="badge bb">◷ plazo</span></td><td><span class="badge ba">Adeudo parcial</span></td><td><div style="width:80px;background:var(--surf3);border-radius:2px;height:5px;overflow:hidden"><div style="width:50%;height:100%;background:var(--amb);border-radius:2px"></div></div></td></tr>
+            <tr><td style="color:var(--amb)">PI-1024</td><td>GAOQUI</td><td>Parque Industrial</td><td>Industrial</td><td style="color:var(--amb)">Parcial todos</td><td style="color:var(--amb)">$91,497</td><td><span class="badge bb">◷ plazo</span></td><td><span class="badge ba">Adeudo parcial</span></td><td><div style="width:80px;background:var(--surf3);border-radius:2px;height:5px;overflow:hidden"><div style="width:40%;height:100%;background:var(--amb);border-radius:2px"></div></div></td></tr>
+            <tr><td style="color:var(--amb)">PI-1025</td><td>TSI</td><td>Parque Industrial</td><td>Industrial</td><td style="color:var(--amb)">Parcial todos</td><td style="color:var(--amb)">$76,564</td><td><span class="badge bb">◷ plazo</span></td><td><span class="badge ba">Adeudo parcial</span></td><td><div style="width:80px;background:var(--surf3);border-radius:2px;height:5px;overflow:hidden"><div style="width:35%;height:100%;background:var(--amb);border-radius:2px"></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════ INPC ══════ -->
+    <div class="page" id="pg-inpc">
+      <div class="kg kg4">
+        <div class="kpi k-acc"><div class="kl">Total locatarios con aumento</div><div class="kv" style="color:var(--acc)">46</div><div class="ks">Ene + Mar + Abr 2026</div></div>
+        <div class="kpi k-tel"><div class="kl">Dif. total / mes</div><div class="kv" style="color:var(--tel)">$370,964</div><div class="ks">Ingreso adicional mensual</div></div>
+        <div class="kpi k-gld"><div class="kl">Dif. total / año</div><div class="kv" style="color:var(--gld)">$4.45M</div><div class="ks">Impacto anual portafolio</div></div>
+        <div class="kpi k-amb"><div class="kl">Pendientes</div><div class="kv" style="color:var(--amb)">4</div><div class="ks">#REF + tema legal Abril</div></div>
+      </div>
+      <div class="card">
+        <div class="card-t">Simulador — ajusta el INPC por mes y filtra propiedades</div>
+        <div class="card-s">Los totales se recalculan en tiempo real</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px;">
+          <div style="background:var(--surf2);border-radius:6px;padding:10px;">
+            <div style="font-size:10px;font-weight:500;margin-bottom:6px;color:var(--acc)">Enero 2026</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;"><span style="font-size:9px;color:var(--muted)">INPC %:</span><input type="number" id="p-ene" value="3.80" step="0.01" min="0" max="20" style="background:var(--surf3);border:1px solid var(--bdr2);border-radius:3px;padding:3px 6px;color:var(--txt);font-size:10px;width:70px;" oninput="recalcInpc()"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--tel)" id="ene-res">$125,204 / mes</div>
+          </div>
+          <div style="background:var(--surf2);border-radius:6px;padding:10px;">
+            <div style="font-size:10px;font-weight:500;margin-bottom:6px;color:var(--grn)">Marzo 2026</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;"><span style="font-size:9px;color:var(--muted)">INPC %:</span><input type="number" id="p-mar" value="3.79" step="0.01" min="0" max="20" style="background:var(--surf3);border:1px solid var(--bdr2);border-radius:3px;padding:3px 6px;color:var(--txt);font-size:10px;width:70px;" oninput="recalcInpc()"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--tel)" id="mar-res">$163,813 / mes</div>
+          </div>
+          <div style="background:var(--surf2);border-radius:6px;padding:10px;">
+            <div style="font-size:10px;font-weight:500;margin-bottom:6px;color:var(--amb)">Abril 2026</div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px;"><span style="font-size:9px;color:var(--muted)">INPC %:</span><input type="number" id="p-abr" value="4.02" step="0.01" min="0" max="20" style="background:var(--surf3);border:1px solid var(--bdr2);border-radius:3px;padding:3px 6px;color:var(--txt);font-size:10px;width:70px;" oninput="recalcInpc()"></div>
+            <div style="font-size:13px;font-weight:600;color:var(--tel)" id="abr-res">$105,457 / mes</div>
+          </div>
+        </div>
+        <div style="background:var(--surf3);border-radius:5px;padding:10px;display:flex;gap:20px;align-items:center;">
+          <div><span style="font-size:9px;color:var(--muted)">Total acumulado/mes: </span><span style="font-size:16px;font-weight:600;color:var(--tel)" id="inpc-tot-mes">$394,474</span></div>
+          <div><span style="font-size:9px;color:var(--muted)">Total/año: </span><span style="font-size:16px;font-weight:600;color:var(--gld)" id="inpc-tot-anual">$4.73M</span></div>
+        </div>
+      </div>
+      <div class="tbl-w">
+        <div class="thl"><div class="sec-t a">Detalle de aumentos — Ene + Mar + Abr 2026</div><input class="srch" placeholder="Buscar locatario..." oninput="filtInpc(this.value)"></div>
+        <table id="inpc-tbl">
+          <thead><tr><th>Mes</th><th>Propiedad</th><th>Locatario</th><th>Renta anterior</th><th>Nueva renta</th><th>Dif./mes</th><th>Dif./año</th><th>Nota</th></tr></thead>
+          <tbody id="inpc-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════ RENT ROLL ══════ -->
+    <div class="page" id="pg-rentroll">
+      <div class="kg kg4">
+        <div class="kpi k-gld"><div class="kl">Total contratos CA</div><div class="kv" style="color:var(--gld)">89</div><div class="ks">Cielo Abierto Mar 2026</div></div>
+        <div class="kpi k-acc"><div class="kl">m² arrendados</div><div class="kv" style="color:var(--acc)">20,128</div><div class="ks">Cielo Abierto</div></div>
+        <div class="kpi k-red"><div class="kl">Vencen &lt;12 meses</div><div class="kv" style="color:var(--red)">27</div><div class="ks">Requieren renovación</div></div>
+        <div class="kpi k-amb"><div class="kl">Vencen 12–24 meses</div><div class="kv" style="color:var(--amb)">52</div><div class="ks">Seguimiento programado</div></div>
+      </div>
+      <div class="wb">⚠ <strong>27 contratos de Cielo Abierto vencen en menos de 12 meses</strong> — iniciar negociaciones de renovación. Los marcados en rojo son urgentes (&lt;6 meses): CASSAVA ROOTS (Oct 2026) y KINETIC HEALTH (Jul 2026).</div>
+      <div class="tbl-w">
+        <div class="thl"><div class="sec-t">Contratos con alerta de vencimiento — Cielo Abierto</div><input class="srch" placeholder="Buscar..." oninput="filtRR(this.value)"></div>
+        <div style="overflow-x:auto">
+        <table id="rr-tbl">
+          <thead><tr><th>No.</th><th>Arrendatario</th><th>m²</th><th>Total Renta+Mtto</th><th>$/m²</th><th>F. Inicio</th><th>F. Fin</th><th>Meses Rest.</th><th>Alerta</th></tr></thead>
+          <tbody id="rr-body"></tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ PRES VS GASTOS ══════ -->
+    <div class="page" id="pg-presgas">
+      <div class="kg kg3">
+        <div class="kpi k-grn"><div class="kl">Ingresos ENE–MAR (real)</div><div class="kv" style="color:var(--grn)">$86.8M</div><div class="ks">Todas las propiedades</div></div>
+        <div class="kpi k-red"><div class="kl">Gastos ENE–MAR (real)</div><div class="kv" style="color:var(--red)">$7.2M</div><div class="ks">Incluye predial Ene + gastos FVC</div></div>
+        <div class="kpi k-gld"><div class="kl">Utilidad operativa ENE–MAR</div><div class="kv" style="color:var(--gld)">$79.6M</div><div class="ks">Margen promedio 91.7%</div></div>
+      </div>
+      <div class="tbl-w">
+        <div class="thl"><div class="sec-t">Ingresos vs Gastos por propiedad</div></div>
+        <table>
+          <thead><tr><th>Propiedad</th><th>ENE Ing.</th><th>ENE Gas.</th><th>ENE Util.</th><th>FEB Ing.</th><th>FEB Gas.</th><th>FEB Util.</th><th>MAR Ing.</th><th>MAR Gas.</th><th>MAR Util.</th><th>Margen %</th></tr></thead>
+          <tbody>
+            <tr><td><strong>La Estación + CA</strong></td><td style="color:var(--grn)">$13.0M</td><td style="color:var(--red)">$1.27M</td><td style="color:var(--grn);font-weight:600">$11.7M</td><td style="color:var(--grn)">$13.0M</td><td style="color:var(--red)">$4.79M</td><td style="color:var(--amb);font-weight:600">$8.2M</td><td style="color:var(--grn)">$13.2M</td><td style="color:var(--red)">$1.13M</td><td style="color:var(--grn);font-weight:600">$12.1M</td><td style="color:var(--grn);font-weight:600">90%</td></tr>
+            <tr><td><strong>FVC</strong></td><td style="color:var(--amb)">$375K</td><td style="color:var(--red)">$1.15M</td><td style="color:var(--red);font-weight:600">-$775K</td><td style="color:var(--amb)">$425K</td><td style="color:var(--red)">$4.1M</td><td style="color:var(--red);font-weight:600">-$3.7M</td><td style="color:var(--amb)">$420K</td><td style="color:var(--red)">$1.5M</td><td style="color:var(--red);font-weight:600">-$1.1M</td><td style="color:var(--red);font-weight:600">Neg.</td></tr>
+            <tr><td><strong>Parque Industrial</strong></td><td style="color:var(--grn)">$19.8M</td><td style="color:var(--red)">$1.2M</td><td style="color:var(--grn);font-weight:600">$18.6M</td><td style="color:var(--grn)">$19.7M</td><td style="color:var(--red)">$980K</td><td style="color:var(--grn);font-weight:600">$18.7M</td><td style="color:var(--grn)">$19.8M</td><td style="color:var(--red)">$1.1M</td><td style="color:var(--grn);font-weight:600">$18.7M</td><td style="color:var(--grn);font-weight:600">94%</td></tr>
+            <tr><td><strong>CUU + CUU 2</strong></td><td style="color:var(--grn)">$571K</td><td style="color:var(--red)">$95K</td><td style="color:var(--grn);font-weight:600">$476K</td><td style="color:var(--grn)">$571K</td><td style="color:var(--red)">$88K</td><td style="color:var(--grn);font-weight:600">$483K</td><td style="color:var(--grn)">$578K</td><td style="color:var(--red)">$91K</td><td style="color:var(--grn);font-weight:600">$487K</td><td style="color:var(--grn);font-weight:600">84%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════ PROPIEDADES INDIVIDUALES ══════ -->
+    <div class="page" id="pg-asturimart">
+      <div class="ib"><strong>Asturimart — La Estación + Cielo Abierto.</strong> 89 contratos vigentes. ENE–MAR al 99.7%. 3 vencidos reales (BELLEKI, ALORI, VAPE). Abril dentro de plazo.</div>
+      <div class="kg kg4">
+        <div class="kpi k-grn"><div class="kl">Rec. ENE–MAR</div><div class="kv" style="color:var(--grn)">99.7%</div></div>
+        <div class="kpi k-red"><div class="kl">Morosidad real</div><div class="kv" style="color:var(--red)">0.5%</div><div class="ks">$113K · 3 locatarios</div></div>
+        <div class="kpi k-acc"><div class="kl">Abril en curso</div><div class="kv" style="color:var(--acc)">79%</div><div class="ks">Dentro de plazo</div></div>
+        <div class="kpi k-gld"><div class="kl">Acum. YTD</div><div class="kv" style="color:var(--gld)">$32.03M</div></div>
+      </div>
+    </div>
+    <div class="page" id="pg-fvc">
+      <div class="rb"><strong>FVC — Acción requerida.</strong> UMBRELLA HOTEL acumula $2.84M de adeudo en meses cerrados. Los locales comerciales están al corriente. Verificar acuerdo de pago diferido o iniciar acción legal.</div>
+      <div class="kg kg3">
+        <div class="kpi k-red"><div class="kl">Rec. ENE–MAR</div><div class="kv" style="color:var(--red)">28%</div><div class="ks">Por UMBRELLA</div></div>
+        <div class="kpi k-red"><div class="kl">Adeudo UMBRELLA</div><div class="kv" style="color:var(--red)">$2.84M</div><div class="ks">3 meses cerrados</div></div>
+        <div class="kpi k-grn"><div class="kl">Sin hotel</div><div class="kv" style="color:var(--grn)">86%</div><div class="ks">Locales al corriente</div></div>
+      </div>
+    </div>
+    <div class="page" id="pg-pi">
+      <div class="ib"><strong>Parque Industrial M2 — 22 inquilinos.</strong> ENE–MAR al 99.8%. Adeudos parciales menores.</div>
+      <div class="kg kg3">
+        <div class="kpi k-grn"><div class="kl">Rec. ENE–MAR</div><div class="kv" style="color:var(--grn)">99.8%</div></div>
+        <div class="kpi k-amb"><div class="kl">Adeudo parcial</div><div class="kv" style="color:var(--amb)">$866K</div></div>
+        <div class="kpi k-acc"><div class="kl">Presup./mes</div><div class="kv" style="color:var(--acc)">$19.8M</div></div>
+      </div>
+    </div>
+    <div class="page" id="pg-cuu">
+      <div class="ib"><strong>CUU — Chihuahua.</strong> Ambas propiedades al 100% de recuperación. Cero adeudos reales.</div>
+      <div class="kg kg3">
+        <div class="kpi k-grn"><div class="kl">Rec. ENE–MAR</div><div class="kv" style="color:var(--grn)">100%</div></div>
+        <div class="kpi k-grn"><div class="kl">Adeudo real</div><div class="kv" style="color:var(--grn)">$0</div></div>
+        <div class="kpi k-amb"><div class="kl">Vacantes CUU 2</div><div class="kv" style="color:var(--amb)">2</div></div>
+      </div>
+    </div>
+    <div class="page" id="pg-montes">
+      <div class="ib"><strong>Montes Urales 415 — Oficinas corporativas.</strong> Propiedad de oficinas en CDMX. 100% de recuperación en meses cerrados. TURBOFIN (Piso 1) y FLAMMA CORPORATION (Piso 3) con aumentos INPC de Enero y Marzo aplicados.</div>
+      <div class="kg kg3">
+        <div class="kpi k-grn"><div class="kl">Rec. ENE–MAR</div><div class="kv" style="color:var(--grn)">100%</div></div>
+        <div class="kpi k-grn"><div class="kl">Adeudo real</div><div class="kv" style="color:var(--grn)">$0</div></div>
+        <div class="kpi k-tel"><div class="kl">INPC dif./mes</div><div class="kv" style="color:var(--tel)">$41,956</div></div>
+      </div>
+    </div>
+
+    <!-- ══════ FACTURAS ══════ -->
+    <div class="page" id="pg-facturas">
+      <div class="kg kg4">
+        <div class="kpi k-acc"><div class="kl">Emitidas 2026</div><div class="kv" style="color:var(--acc)">247</div></div>
+        <div class="kpi k-grn"><div class="kl">Pagadas</div><div class="kv" style="color:var(--grn)">239</div><div class="ks">96.8%</div></div>
+        <div class="kpi k-red"><div class="kl">No pagadas</div><div class="kv" style="color:var(--red)">2</div><div class="ks">BELLEKI + UMBRELLA</div></div>
+        <div class="kpi k-amb"><div class="kl">En proceso</div><div class="kv" style="color:var(--amb)">6</div><div class="ks">Abril activo</div></div>
+      </div>
+      <div class="tbl-w">
+        <div class="thl"><div class="sec-t">Registro de facturas</div><input class="srch" placeholder="Buscar..." oninput="filtFac(this.value)"></div>
+        <table id="fac-tbl">
+          <thead><tr><th>No. Factura</th><th>Fecha</th><th>No. Cliente</th><th>Locatario</th><th>Mes</th><th>Monto</th><th>Total c/IVA</th><th>Email</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>FAC-2026-001</td><td>05/01</td><td style="color:var(--acc)">LE-1002</td><td>SPORT CITY</td><td>Enero</td><td>$1,223,408</td><td>$1,419,153</td><td style="font-size:8px;color:var(--muted)">contabilidad@sportcity.com.mx</td><td><span class="badge bg">Pagada</span></td></tr>
+            <tr><td>FAC-2026-002</td><td>05/01</td><td style="color:var(--acc)">CA-2028</td><td>PISTA DE HIELO</td><td>Enero</td><td>$634,040</td><td>$735,487</td><td style="font-size:8px;color:var(--muted)">admin@pista.mx</td><td><span class="badge bg">Pagada</span></td></tr>
+            <tr style="background:rgba(229,62,62,.04)"><td>FAC-2026-101</td><td>05/02</td><td style="color:var(--red);font-weight:600">CA-2012</td><td><strong>BELLEKI</strong></td><td>Febrero</td><td>$87,000</td><td>$100,920</td><td style="font-size:8px;color:var(--muted)">belleki@gmail.com</td><td><span class="badge br">No pagada</span></td></tr>
+            <tr style="background:rgba(229,62,62,.04)"><td>FAC-2026-201</td><td>05/03</td><td style="color:var(--red);font-weight:600">CA-2012</td><td><strong>BELLEKI</strong></td><td>Marzo</td><td>$87,000</td><td>$100,920</td><td style="font-size:8px;color:var(--muted)">belleki@gmail.com</td><td><span class="badge br">No pagada</span></td></tr>
+            <tr><td>FAC-2026-402</td><td>05/04</td><td style="color:var(--acc)">CA-2011</td><td>SPUNTINO</td><td>Abril</td><td>$376,906</td><td>$437,211</td><td style="font-size:8px;color:var(--muted)">pagos@spuntino.mx</td><td><span class="badge bg">Pagada</span></td></tr>
+            <tr><td>FAC-2026-401</td><td>05/04</td><td style="color:var(--acc)">LE-1002</td><td>SPORT CITY</td><td>Abril</td><td>$1,269,775</td><td>$1,472,939</td><td style="font-size:8px;color:var(--muted)">contabilidad@sportcity.com.mx</td><td><span class="badge bb">◷ En plazo</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════ ESTADOS DE CUENTA ══════ -->
+    <div class="page" id="pg-estados">
+      <div class="ib"><strong>Estados de cuenta bancarios.</strong> Sube el extracto bancario a la carpeta de Drive. El script lee los depósitos, detecta el número de cliente en el campo "Concepto" y aplica el pago automáticamente.</div>
+      <div class="kg kg3">
+        <div class="kpi k-grn"><div class="kl">Auto-identificados</div><div class="kv" style="color:var(--grn)">94%</div></div>
+        <div class="kpi k-amb"><div class="kl">Sin identificar</div><div class="kv" style="color:var(--amb)">6%</div><div class="ks">Manual</div></div>
+        <div class="kpi k-acc"><div class="kl">Cuentas activas</div><div class="kv" style="color:var(--acc)">1/5</div><div class="ks">Asturimart confirmada</div></div>
+      </div>
+    </div>
+
+    <!-- ══════ CLIENTES ══════ -->
+    <div class="page" id="pg-clientes">
+      <div class="ib"><strong>Números de cliente para referencia de pago.</strong> Comunica el número a cada locatario para que lo escriban en el campo "Concepto" al hacer su transferencia.</div>
+      <div class="tbl-w">
+        <div class="thl"><div class="sec-t">Directorio de números de cliente</div><input class="srch" placeholder="Buscar..." oninput="filtNC(this.value)"></div>
+        <table id="nc-tbl">
+          <thead><tr><th>No. Cliente</th><th>Propiedad</th><th>Local</th><th>Locatario</th><th>Renta base</th><th>Estado</th></tr></thead>
+          <tbody id="nc-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════ COMPARTIR ══════ -->
+    <div class="page" id="pg-compartir">
+      <div class="ib"><strong>Opciones para compartir el dashboard con el Consejo de Administración.</strong></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="card" style="border-color:var(--acc)">
+          <div style="font-size:10px;color:var(--acc);font-weight:600;margin-bottom:6px">⭐ Recomendado — Google Looker Studio</div>
+          <div style="font-size:11px;font-weight:500;margin-bottom:5px">Link compartible gratuito</div>
+          <div style="font-size:10px;color:var(--muted);line-height:1.6">Conectas tu Google Sheets directamente. Genera un link que el Consejo puede abrir sin cuenta Google. Se actualiza en tiempo real. Tiempo de configuración: 2-3 horas.<br><br><span style="color:var(--grn)">✓ Gratis</span> · <span style="color:var(--grn)">✓ Link directo</span> · <span style="color:var(--grn)">✓ Tiempo real</span></div>
+        </div>
+        <div class="card">
+          <div style="font-size:11px;font-weight:500;margin-bottom:5px">GitHub Pages — URL propia</div>
+          <div style="font-size:10px;color:var(--muted);line-height:1.6">El dashboard HTML se publica como página web con URL tipo m2-portafolio.github.io. Actualización manual cuando generas nuevo reporte.<br><br><span style="color:var(--grn)">✓ Gratis</span> · <span style="color:var(--amb)">⚡ Manual</span></div>
+        </div>
+        <div class="card">
+          <div style="font-size:11px;font-weight:500;margin-bottom:5px">Google Sites — intranet privada</div>
+          <div style="font-size:10px;color:var(--muted);line-height:1.6">Creas un Google Site donde embutes el dashboard. Acceso con contraseña. Ideal para control de quien ve.<br><br><span style="color:var(--grn)">✓ Gratis</span> · <span style="color:var(--grn)">✓ Con contraseña</span></div>
+        </div>
+        <div class="card">
+          <div style="font-size:11px;font-weight:500;margin-bottom:5px">Power BI — versión premium</div>
+          <div style="font-size:10px;color:var(--muted);line-height:1.6">Roles de usuario, alertas automáticas, app móvil. El Consejo solo ve, tú editas.<br><br><span style="color:var(--amb)">$10 USD/usuario/mes</span> · <span style="color:var(--grn)">✓ App móvil</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+<script>
+const pmap={inicio:'Portafolio M2 — Inicio',resumen:'Resumen Ejecutivo',cobranza:'Cobranza consolidada',inpc:'INPC — Aumentos de renta',rentroll:'Rent Roll',presgas:'Presupuesto vs Gastos',asturimart:'Asturimart — La Estación + Cielo Abierto',fvc:'FVC — Fideicomiso Venustiano Carranza',pi:'Parque Industrial M2',cuu:'CUU — Chihuahua',montes:'Montes Urales 415',clientes:'Números de cliente',compartir:'Compartir online',facturas:'Facturas emitidas',estados:'Estados de cuenta'};
+function nav(el,id){
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pg-'+id)?.classList.add('active');
+  document.getElementById('pgt').textContent=pmap[id]||id;
+}
+
+// ── RESUMEN BARS ─────────────────────────────
+function buildResumenBars(){
+  const d1=document.getElementById('cobr-prop-bars');
+  if(!d1) return;
+  const props=[['Asturimart',99.7,'var(--grn)'],['FVC',28,'var(--red)'],['Parque Industrial',99.8,'var(--grn)'],['CUU',100,'var(--grn)'],['Montes Urales',100,'var(--grn)']];
+  props.forEach(([n,p,c])=>{
+    const div=document.createElement('div');
+    div.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:6px;';
+    div.innerHTML=`<span style="font-size:9px;color:var(--muted);width:90px;flex-shrink:0">${n}</span><div style="flex:1;background:var(--surf3);border-radius:3px;height:7px;overflow:hidden"><div style="width:${Math.min(p,100)}%;height:100%;background:${c};border-radius:3px"></div></div><span style="font-size:9px;font-weight:600;color:${c};width:40px;text-align:right">${p}%</span>`;
+    d1.appendChild(div);
+  });
+  const d2=document.getElementById('adeudo-bars');
+  if(!d2) return;
+  const adeudos=[['UMBRELLA (FVC)',2836200,'var(--red)'],['PI parciales',866000,'var(--amb)'],['BELLEKI',87000,'var(--red)'],['VAPE',13189,'var(--red)'],['ALORI',12710,'var(--red)']];
+  const maxA=adeudos[0][1];
+  adeudos.forEach(([n,v,c])=>{
+    const pct=Math.round(v/maxA*100);
+    const div=document.createElement('div');
+    div.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:6px;';
+    div.innerHTML=`<span style="font-size:9px;color:var(--muted);width:100px;flex-shrink:0">${n}</span><div style="flex:1;background:var(--surf3);border-radius:3px;height:7px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${c};border-radius:3px"></div></div><span style="font-size:9px;font-weight:600;color:${c};width:70px;text-align:right">$${Math.round(v/1000)}K</span>`;
+    d2.appendChild(div);
+  });
+}
+setTimeout(buildResumenBars,100);
+
+// ── INPC ─────────────────────────────────────
+const inpcData=[
+  ['Enero','Cielo Abierto','WAX REVOLUTION',54741.52,56821.69],
+  ['Enero','Cielo Abierto','TAKOTL',166615.58,172946.98],
+  ['Enero','Cielo Abierto','OLIÉ FEEL THE ESSENCE',19482.20,20222.52],
+  ['Enero','Cielo Abierto','CALOR HEAT',19482.20,20222.52],
+  ['Enero','Cielo Abierto','SMART BAMBOO',19482.20,20222.52],
+  ['Enero','Cielo Abierto','MR. PAX',19482.20,20222.52],
+  ['Enero','Cielo Abierto','SANTA CAGUAMA',17088.23,17737.58],
+  ['Enero','Parque Industrial','SIGMA 400',64630.02,67085.96],
+  ['Enero','Infraestructura','AMERIKE (3 contratos)',1399114.76,1452281.12],
+  ['Enero','Infraestructura','UNEA CHIHUAHUA',790700.33,820746.94],
+  ['Enero','CUU','FIT GIMNASIO',82390.87,85521.72],
+  ['Enero','Montes Urales','M2 CORPORATIVO',287172.00,298084.54],
+  ['Marzo','Cielo Abierto','NIU SUSHI',216888.63,225108.71],
+  ['Marzo','Cielo Abierto','SIMPLEMENTE DELI',48368.50,50201.67],
+  ['Marzo','Cielo Abierto','SAKURA',17162.71,17813.18],
+  ['Marzo','Cielo Abierto','PURO VAPE',11369.66,11800.57],
+  ['Marzo','Cielo Abierto','BABY STYLE',13148.00,13646.31],
+  ['Marzo','Parque Industrial','KJ BEAUTY_533',60776.91,63080.35],
+  ['Marzo','Parque Industrial','FIDEICOMISO 4151',1539310.34,1597650.21],
+  ['Marzo','Infraestructura','UNEA TIJUANA',1032899.30,1072046.18],
+  ['Marzo','Infraestructura','UNEA TIJUANA ADIC.',187145.69,194238.51],
+  ['Marzo','Infraestructura','UVA TEHUANTEPEC',484722.79,503093.79],
+  ['Marzo','CUU','GIMNASIO 2',28073.60,29137.59],
+  ['Marzo','CUU','AMORE AMORE',7089.00,7357.67],
+  ['Marzo','Montes Urales','TURBOFIN',329192.68,341669.08],
+  ['Marzo','Montes Urales','FLAMMA CORPORATION',61628.52,63964.24],
+  ['Abril','Cielo Abierto','EL CAMARÓN BUCHÓN',218499.80,227283.49],
+  ['Abril','Cielo Abierto','EXE CENTRO CAMBIARIO',22812.31,23729.36],
+  ['Abril','Cielo Abierto','LA MICHOACANA PLUS',74871.45,77881.28],
+  ['Abril','Cielo Abierto','TORTAS NIZA',49510.54,51500.86],
+  ['Abril','Cielo Abierto','MITU',65686.15,68326.73],
+  ['Abril','Cielo Abierto','PAWERFUL',70044.75,72860.55],
+  ['Abril','Cielo Abierto','CHURRERIA PORFIRIO',13147.88,13676.42],
+  ['Abril','Cielo Abierto','BOGG MX',13147.88,13676.42],
+  ['Abril','Infraestructura','UNEA TIJUANA',1032899.30,1074421.85],
+  ['Abril','Infraestructura','UNEA TIJUANA ADIC.',187145.69,194668.94],
+  ['Abril','Infraestructura','UVA TEHUANTEPEC',484722.79,504208.65],
+  ['Abril','Montes Urales','TURBOFIN',329192.68,342426.23],
+  ['Abril','Montes Urales','FLAMMA CORPORATION',61628.52,64105.99],
+];
+const inpcBase={'Enero':0.0380,'Marzo':0.0379,'Abril':0.0402};
+const fmt=n=>n?'$'+Math.round(n).toLocaleString('es-MX'):'—';
+
+function buildInpcTable(rows){
+  const body=document.getElementById('inpc-body');
+  if(!body) return;
+  body.innerHTML='';
+  let prevMes='';
+  rows.forEach(row=>{
+    const [mes,prop,cliente,r_ant,r_nueva]=row;
+    const diff=r_nueva-r_ant;
+    if(mes!==prevMes){
+      const hr=document.createElement('tr');
+      hr.className='mes-hdr';
+      const mc=mes==='Enero'?'var(--acc)':mes==='Marzo'?'var(--grn)':'var(--amb)';
+      hr.innerHTML=`<td colspan="8" style="color:${mc};font-weight:600">${mes} 2026 · INPC ${(inpcBase[mes]*100).toFixed(2)}%</td>`;
+      body.appendChild(hr);
+      prevMes=mes;
+    }
+    const tr=document.createElement('tr');
+    const mc=mes==='Enero'?'var(--acc)':mes==='Marzo'?'var(--grn)':'var(--amb)';
+    tr.innerHTML=`<td style="color:${mc}">${mes}</td><td>${prop}</td><td style="font-weight:500">${cliente}</td><td style="text-align:right">${fmt(r_ant)}</td><td style="text-align:right;color:var(--grn);font-weight:600">${fmt(r_nueva)}</td><td style="text-align:right;color:var(--tel);font-weight:600">+${fmt(diff)}</td><td style="text-align:right;color:var(--gld)">${fmt(diff*12)}</td><td></td>`;
+    body.appendChild(tr);
+  });
+}
+buildInpcTable(inpcData);
+
+function recalcInpc(){
+  const pe=parseFloat(document.getElementById('p-ene')?.value)/100||0.038;
+  const pm=parseFloat(document.getElementById('p-mar')?.value)/100||0.0379;
+  const pa=parseFloat(document.getElementById('p-abr')?.value)/100||0.0402;
+  const calc=(mes,p)=>inpcData.filter(r=>r[0]===mes&&r[3]).reduce((s,r)=>s+r[3]*p,0);
+  const de=calc('Enero',pe),dm=calc('Marzo',pm),da=calc('Abril',pa);
+  document.getElementById('ene-res').textContent=fmt(de)+' / mes';
+  document.getElementById('mar-res').textContent=fmt(dm)+' / mes';
+  document.getElementById('abr-res').textContent=fmt(da)+' / mes';
+  document.getElementById('inpc-tot-mes').textContent=fmt(de+dm+da);
+  document.getElementById('inpc-tot-anual').textContent=fmt((de+dm+da)*12);
+}
+function filtInpc(v){document.querySelectorAll('#inpc-body tr:not(.mes-hdr)').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(v.toLowerCase())?'':'none';});}
+
+// ── RENT ROLL ─────────────────────────────────
+const rrData=[
+  [50,'CASSAVA ROOTS',32.5,33232,'2022-10-19','2026-10-19'],
+  [82,'KINETIC HEALTH',50,0,'2024-07-25','2026-07-25'],
+  [1,'CITY CAFÉ',146,124490,'2022-02-01','2027-02-01'],
+  [2,'SPORT CITY',3988,1406920,'2022-02-01','2027-02-01'],
+  [3,'STARBUCKS COFFEE',185,115368,'2024-03-01','2027-03-01'],
+  [6,'EXE CENTRO CAMBIARIO',30,30432,'2023-04-27','2027-04-26'],
+  [9,'SUGAR & CO',67.4,50935,'2023-05-01','2027-04-26'],
+  [11,'CICLÓPOLIS',214,110376,'2021-09-01','2027-05-08'],
+  [13,'OLARTE Y AKLE',216.55,138253,'2022-05-02','2027-05-01'],
+  [34,'SIMPLEMENTE DELI',81.74,64524,'2023-03-10','2027-03-09'],
+  [35,'SPUNTINO',427.39,433442,'2022-10-31','2027-10-31'],
+  [37,'BELEKI',102.9,104372,'2023-07-18','2027-07-18'],
+  [38,'ÓPTICAS TURATI',130,85230,'2022-10-25','2027-10-24'],
+  [40,'OLIÉ',24.39,25989,'2023-01-09','2027-01-08'],
+  [41,'CALOR HEAT',24.39,25989,'2023-01-09','2027-01-08'],
+  [42,'SMART BAMBOO',24.39,25989,'2023-01-09','2027-01-08'],
+  [47,'MR. PAX',24.39,25989,'2023-01-13','2027-01-11'],
+  [48,'DERMALIA',73.17,77968,'2023-02-01','2027-01-11'],
+  [49,'HELADOS VILLANOVA',24.39,25989,'2022-12-08','2027-12-07'],
+  [51,'THE LIMITED CO.',32.5,39615,'2023-02-09','2027-02-08'],
+  [52,'SANTA CAGUAMA',38.38,22796,'2023-01-19','2027-01-18'],
+  [53,'PISTA DE HIELO',2126.17,729146,'2023-06-01','2027-12-31'],
+  [26,'DAIKOKU',442,385635,'2022-12-08','2027-06-07'],
+  [28,'ÓPTICAS AVANT 360',37.72,52910,'2022-10-10','2027-10-10'],
+  [29,'LA MICHOACANA PLUS',118.43,99879,'2023-04-27','2027-04-27'],
+  [30,'MARISQUERÍA DEL VALLE',299.14,284490,'2022-10-03','2027-10-03'],
+  [32,'TORTAS NIZA',118.7,66047,'2023-04-21','2027-04-20'],
+];
+const today=new Date('2026-04-16');
+function monthsLeft(ds){const d=new Date(ds);return Math.round((d-today)/(1000*60*60*24*30.44));}
+function fmtDate(ds){const d=new Date(ds);return`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;}
+
+function buildRR(){
+  const body=document.getElementById('rr-body');
+  if(!body) return;
+  const sorted=[...rrData].sort((a,b)=>monthsLeft(a[5])-monthsLeft(b[5]));
+  body.innerHTML='';
+  sorted.forEach(([no,nom,m2,total,fi,ff])=>{
+    const m=monthsLeft(ff);
+    const rc=m<0?'rgba(229,62,62,.06)':m<12?'rgba(229,62,62,.04)':m<24?'rgba(217,119,6,.03)':'';
+    const sem=m<0?'<span class="badge br">⚫ Vencido</span>':m<6?`<span class="badge br">🔴 ${m}m urgente</span>`:m<12?`<span class="badge br">🔴 ${m}m</span>`:m<24?`<span class="badge ba">🟡 ${m}m</span>`:`<span class="badge bg">🟢 ${m}m</span>`;
+    const pxm2=m2>0?Math.round(total/m2):0;
+    const tr=document.createElement('tr');
+    if(rc) tr.style.background=rc;
+    tr.innerHTML=`<td style="color:var(--acc)">${no}</td><td style="font-weight:500">${nom}</td><td style="text-align:right">${m2?m2.toLocaleString('es-MX',''):''}</td><td style="text-align:right;font-weight:600;color:var(--gld)">${fmt(total)}</td><td style="text-align:right;color:var(--muted)">${pxm2?'$'+pxm2:''}</td><td style="color:var(--muted)">${fmtDate(fi)}</td><td style="font-weight:500">${fmtDate(ff)}</td><td style="text-align:center;font-weight:600;color:${m<12?'var(--red)':m<24?'var(--amb)':'var(--grn)'}">${m}</td><td>${sem}</td>`;
+    body.appendChild(tr);
+  });
+}
+setTimeout(buildRR,100);
+function filtRR(v){document.querySelectorAll('#rr-body tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(v.toLowerCase())?'':'none';});}
+
+// ── CLIENTES ─────────────────────────────────
+const ncData=[
+  ['LE-1001','La Estación','L 1','City Café','$108,252'],
+  ['LE-1002','La Estación','L 1-B','SPORT CITY S.A. DE C.V.','$1,223,408'],
+  ['LE-1004','La Estación','L 2','SERVICIOS ALSEA SA DE CV','$122,489'],
+  ['CA-2002','Cielo Abierto','GLA 03-05','DAIKOKU','$322,060'],
+  ['CA-2011','Cielo Abierto','GLA 19','SPUNTINO','$376,906'],
+  ['CA-2012','Cielo Abierto','GLA 20','BELLEKI','$87,000'],
+  ['CA-2028','Cielo Abierto','S/N','PISTA DE HIELO','$634,040'],
+  ['FVC-1001','FVC','Local','ATISBO POLANCO','$129,920'],
+  ['FVC-1004','FVC','Hotel','UMBRELLA HOTEL','$945,400'],
+  ['PI-1001','Parque Industrial','Industrial','UNEA Tijuana','$991,157'],
+  ['PI-1014','Parque Industrial','Industrial','PATIO VW','$8,024,400'],
+  ['CUU-1001','CUU Chih.','Coworking','LINKWORK','$150,500'],
+  ['MU-1001','Montes Urales','Piso 1','TURBOFIN','$329,193'],
+  ['MU-1002','Montes Urales','Piso 3','FLAMMA CORPORATION','$61,629'],
+];
+const ncBody=document.getElementById('nc-body');
+ncData.forEach(([num,prop,loc,nom,renta])=>{
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td style="color:var(--acc);font-weight:600">${num}</td><td>${prop}</td><td style="color:var(--muted)">${loc}</td><td style="font-weight:500">${nom}</td><td style="text-align:right">${renta}</td><td><span class="badge bb">Activo</span></td>`;
+  ncBody.appendChild(tr);
+});
+function filtNC(v){document.querySelectorAll('#nc-body tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(v.toLowerCase())?'':'none';});}
+function filtFac(v){document.querySelectorAll('#fac-tbl tbody tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(v.toLowerCase())?'':'none';});}
+function filterProp(v){/* aplicar filtro global */}
+</script>
