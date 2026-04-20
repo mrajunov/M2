@@ -566,15 +566,18 @@ function fCA(sec,v){const id=sec==='anio'?'ca-anio-body':sec==='abr'?'ca-abr-bod
 </script>
 
 <script>
+console.log("SCRIPT FUNCIONANDO");
+
 fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vTNHH_UgZleomJFm-ESJvS7O-83RBCXy6scP9W9TKXNyMoRPdcTaD7wqAdv723dwfVRKMzBqAVq02Bb/pub?gid=51138493&single=true&output=csv")
 .then(res => res.text())
 .then(data => {
+  console.log("DATA:");
   console.log(data);
+})
+.catch(err => {
+  console.error("ERROR:", err);
 });
 </script>
-
-</body>
-</html>
 
 
 </body>
