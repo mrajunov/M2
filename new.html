@@ -566,10 +566,8 @@ function fCA(sec,v){const id=sec==='anio'?'ca-anio-body':sec==='abr'?'ca-abr-bod
   </script>
 
 <script>
-alert("SCRIPT CORRIENDO");
-
 async function cargarDatos() {
-    const url = "https://docs.google.com/spreadsheets/d/1KCma9UhjdpGPo7sxyK24-7leuepv6dJw/gviz/tq?tqx=out:json&gid=1414672550";
+    const url = "https://docs.google.com/spreadsheets/d/13eRrZ62TWcNPCaAgJFLtwrpzrg0UuBKt/gviz/tq?tqx=out:json&gid=1453927816";
 
     const res = await fetch(url);
     const text = await res.text();
@@ -579,7 +577,12 @@ async function cargarDatos() {
 
     console.log("DATOS:", rows);
 
-    alert("DATOS CARGADOS");
+    // 🔽 PRUEBA VISUAL EN TU DASHBOARD
+    document.body.insertAdjacentHTML("beforeend",
+        `<div style="position:fixed;bottom:10px;left:10px;background:#111;color:#0f0;padding:10px;font-size:12px;z-index:9999">
+            Filas cargadas: ${rows.length}
+        </div>`
+    );
 }
 
 cargarDatos();
