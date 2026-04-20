@@ -575,7 +575,7 @@ async function cargarDatos() {
   const json = JSON.parse(text.substring(47).slice(0, -2));
   const rows = json.table.rows;
 
-  console.log("SI FUNCIONA");
+console.log("SI FUNCIONA", rows);
 }
 
 cargarDatos();
