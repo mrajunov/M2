@@ -568,33 +568,19 @@ function fCA(sec,v){const id=sec==='anio'?'ca-anio-body':sec==='abr'?'ca-abr-bod
 <script>
 window.addEventListener("load", function () {
 
+console.log("ARRANCÓ SCRIPT");
+
 fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vTNHH_UgZleomJFm-ESJvS7O-83RBCXy6scP9W9TKXNyMoRPdcTaD7wqAdv723dwfVRKMzBqAVq02Bb/pub?gid=51138493&single=true&output=csv")
 .then(res => {
-  if (!res.ok) throw new Error("HTTP " + res.status);
+  console.log("STATUS:", res.status);
   return res.text();
 })
 .then(data => {
-
-  console.log("DATA OK");
-
-  const rows = data.split("\n").slice(1);
-  let total = 0;
-
-  rows.forEach(r => {
-    const cols = r.split(",");
-    total += Number(cols[1]) || 0;
-  });
-
-  console.log("TOTAL:", total);
-
-  const el = document.getElementById("total-cobranza");
-  if (el) {
-    el.innerText = "$" + total.toLocaleString();
-  }
-
+  console.log("DATA RECIBIDA");
+  console.log(data.slice(0,200)); // solo muestra un pedazo
 })
 .catch(err => {
-  console.error("ERROR REAL:", err);
+  console.error("ERROR:", err);
 });
 
 });
