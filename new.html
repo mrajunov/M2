@@ -1,0 +1,565 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#07090F;--s1:#0E1420;--s2:#141C2E;--s3:#1A2338;--b1:#1C2B42;--b2:#243550;--t1:#EEF2FF;--t2:#8FA4C8;--t3:#4E6485;--t4:#2A3D5C;--acc:#4B8EF1;--grn:#0EA572;--red:#E53E3E;--amb:#D97706;--gld:#C8922A;--tel:#0891B2}
+body{background:var(--bg);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:12px;height:100vh;overflow:hidden}
+.app{display:flex;height:100vh}
+.sb{width:210px;background:var(--s1);border-right:1px solid var(--b1);display:flex;flex-direction:column;flex-shrink:0}
+.logo{padding:15px 14px 12px;border-bottom:1px solid var(--b1)}
+.logo-t{font-family:'DM Serif Display',serif;font-size:15px;color:var(--gld)}
+.logo-s{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
+.nav-s{flex:1;overflow-y:auto;padding:5px 0}
+.nav-s::-webkit-scrollbar{width:3px}.nav-s::-webkit-scrollbar-thumb{background:var(--b2)}
+.nl{padding:9px 13px 3px;font-size:8px;color:var(--t4);text-transform:uppercase;letter-spacing:.1em}
+.ni{display:flex;align-items:center;gap:7px;padding:7px 13px;cursor:pointer;color:var(--t3);font-size:11px;border-left:2px solid transparent;transition:.1s}
+.ni:hover{color:var(--t1);background:var(--s2)}.ni.on{color:var(--acc);border-left-color:var(--acc);background:rgba(75,142,241,.07)}
+.nb{font-size:8px;padding:1px 5px;border-radius:8px;margin-left:auto;font-weight:600}
+.nbg{background:rgba(14,165,114,.2);color:#34D399}.nba{background:rgba(217,119,6,.2);color:#FCD34D}
+.nbr{background:rgba(229,62,62,.2);color:#F87171}.nbb{background:rgba(75,142,241,.2);color:#93C5FD}
+.sf{padding:10px 13px;border-top:1px solid var(--b1);font-size:9px;color:var(--t3)}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{padding:10px 18px;border-bottom:1px solid var(--b1);background:var(--s1);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.tb-t{font-family:'DM Serif Display',serif;font-size:14px}.tb-s{font-size:9px;color:var(--t3);margin-top:1px}
+.tb-r{display:flex;gap:6px}
+.btn{padding:5px 10px;border-radius:4px;font-size:10px;cursor:pointer;border:1px solid var(--b2);background:var(--s2);color:var(--t1);font-family:'DM Sans',sans-serif}
+.bta{background:var(--acc);border-color:var(--acc);color:#fff}.btg{background:rgba(14,165,114,.12);border-color:rgba(14,165,114,.25);color:var(--grn)}
+.body{flex:1;overflow-y:auto;padding:14px 18px}
+.body::-webkit-scrollbar{width:4px}.body::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+.pg{display:none}.pg.on{display:block}
+.kg{display:grid;gap:9px;margin-bottom:14px}
+.kg5{grid-template-columns:repeat(5,1fr)}.kg4{grid-template-columns:repeat(4,1fr)}
+.kg3{grid-template-columns:repeat(3,1fr)}.kg2{grid-template-columns:repeat(2,1fr)}
+.k{background:var(--s1);border:1px solid var(--b1);border-radius:8px;padding:11px 13px;position:relative;overflow:hidden}
+.k::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.k-a::before{background:var(--acc)}.k-g::before{background:var(--grn)}.k-r::before{background:var(--red)}
+.k-o::before{background:var(--amb)}.k-d::before{background:var(--gld)}.k-t::before{background:var(--tel)}
+.kl{font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.kv{font-size:18px;font-weight:600;line-height:1.1;margin-bottom:2px}.ks{font-size:9px;color:var(--t3);line-height:1.4}
+.kb{display:inline-block;font-size:8px;padding:1px 6px;border-radius:3px;margin-top:4px}
+.kb-g{background:rgba(14,165,114,.12);color:var(--grn)}.kb-b{background:rgba(75,142,241,.12);color:var(--acc)}
+.tw{background:var(--s1);border:1px solid var(--b1);border-radius:8px;padding:13px;margin-bottom:10px}
+.th{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;flex-wrap:wrap;gap:6px}
+.st{font-size:10px;font-weight:500;border-left:2px solid var(--acc);padding-left:7px}
+.st.g{border-left-color:var(--grn)}.st.a{border-left-color:var(--amb)}.st.r{border-left-color:var(--red)}
+.srch{background:var(--s2);border:1px solid var(--b2);border-radius:4px;padding:4px 8px;color:var(--t1);font-size:9px;width:155px}
+.srch::placeholder{color:var(--t3)}
+table{width:100%;border-collapse:collapse;font-size:9px}
+th{text-align:left;padding:5px 7px;color:var(--t3);font-weight:400;font-size:8px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--b1)}
+td{padding:5px 7px;border-bottom:1px solid rgba(28,43,66,.4)}
+tr:last-child td{border-bottom:none}tr:hover td{background:var(--s2)}
+.bd{padding:2px 6px;border-radius:3px;font-size:8px;font-weight:500}
+.bg{background:rgba(14,165,114,.12);color:var(--grn)}.br{background:rgba(229,62,62,.12);color:var(--red)}
+.ba{background:rgba(217,119,6,.12);color:var(--amb)}.bb{background:rgba(75,142,241,.12);color:var(--acc)}
+.bn{background:var(--s3);color:var(--t3)}
+.ib{background:rgba(75,142,241,.06);border:1px solid rgba(75,142,241,.18);border-radius:6px;padding:9px 12px;margin-bottom:12px;font-size:10px;color:var(--t2);line-height:1.6}
+.ib strong{color:var(--acc)}.gb{background:rgba(14,165,114,.06);border:1px solid rgba(14,165,114,.18);border-radius:6px;padding:9px 12px;margin-bottom:12px;font-size:10px;color:var(--grn)}
+.wb{background:rgba(217,119,6,.06);border:1px solid rgba(217,119,6,.18);border-radius:6px;padding:9px 12px;margin-bottom:12px;font-size:10px;color:var(--amb)}
+.pg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.pc{background:var(--s1);border:1px solid var(--b1);border-radius:9px;padding:14px;cursor:pointer;transition:.12s;position:relative}
+.pc:hover{border-color:var(--acc);background:var(--s2)}
+.pc-n{font-size:12px;font-weight:600;color:var(--acc);margin-bottom:3px}.pc-t{font-size:12px;font-weight:500;margin-bottom:2px}
+.pc-l{font-size:9px;color:var(--t3);margin-bottom:8px}.pc-ks{display:flex;gap:12px}
+.pc-k .v{font-size:14px;font-weight:600;line-height:1.2}.pc-k .l{font-size:8px;color:var(--t3)}
+.pc-dot{position:absolute;top:10px;right:10px;width:8px;height:8px;border-radius:50%}
+.itabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.itab{padding:5px 13px;border-radius:5px;font-size:10px;font-weight:500;cursor:pointer;border:1px solid var(--b2);background:var(--s2);color:var(--t3);transition:.1s}
+.itab:hover{color:var(--t1)}.itab.on{color:#fff;border-color:transparent}
+.it-all.on{background:var(--s3);color:var(--t1);border-color:var(--b2)}
+.it-ene.on{background:rgba(75,142,241,.7)}.it-feb.on{background:rgba(14,165,114,.8)}
+.it-mar.on{background:rgba(14,165,114,.5)}.it-abr.on{background:rgba(217,119,6,.75)}
+.isec{display:none}.isec.on{display:block}
+.casec{display:none}.casec.on{display:block}
+.ca-anio.on{background:var(--s3);color:var(--t1);border-color:var(--b2)}
+.ca-abr.on{background:rgba(75,142,241,.7);color:#fff;border-color:transparent}
+.ca-atr.on{background:rgba(229,62,62,.75);color:#fff;border-color:transparent}
+.sim4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.sc{background:var(--s2);border-radius:6px;padding:10px}
+.sc.feb-sc{background:rgba(14,165,114,.08);border:1px solid rgba(14,165,114,.25)}
+.sin{background:var(--s3);border:1px solid var(--b2);border-radius:3px;padding:3px 6px;color:var(--t1);font-size:11px;width:68px;font-family:'DM Sans',sans-serif}
+.grp-hdr td{background:var(--s2);color:var(--acc);font-weight:600;font-size:9px;padding:5px 7px;border-top:1px solid var(--b2)}
+.ttl-r td{background:var(--s2);font-weight:600;border-top:2px solid var(--b2);padding:5px 7px}
+</style></head><body>
+<div class="app">
+<div class="sb">
+  <div class="logo"><div class="logo-t">M2 · Portafolio</div><div class="logo-s">Actualizado 18 Abr 2026</div></div>
+  <div class="nav-s">
+    <div class="nl">General</div>
+    <div class="ni on" onclick="go(this,'inicio')">🏠 Inicio</div>
+    <div class="ni" onclick="go(this,'reporte')">📊 Reporte Ejecutivo</div>
+    <div class="nl">Cobranza y Análisis</div>
+    <div class="ni" onclick="go(this,'cobranza')">💰 Cobranza Consolidada</div>
+    <div class="ni" onclick="go(this,'cobrca')">🏷 Cobranza Cielo Abierto <span class="nb nbb">año</span></div>
+    <div class="ni" onclick="go(this,'inpc')">📈 INPC <span class="nb nba">Ene→Feb→Mar→Abr</span></div>
+    <div class="ni" onclick="go(this,'rentroll')">🏢 Rent Roll <span class="nb nbr">27</span></div>
+    <div class="ni" onclick="go(this,'facturas')">📄 Facturas Hugo <span class="nb nba">97</span></div>
+    <div class="ni" onclick="go(this,'clientes')">🔢 Núm. Clientes <span class="nb nbb">137+</span></div>
+    <div class="nl">Propiedades</div>
+    <div class="ni" onclick="go(this,'asturimart')">Asturimart (88 contratos)</div>
+    <div class="ni" onclick="go(this,'fvc')">FVC — UMBRAL Hotel</div>
+    <div class="ni" onclick="go(this,'pi')">Parque Industrial</div>
+    <div class="ni" onclick="go(this,'cuu')">CUU — Chihuahua</div>
+    <div class="ni" onclick="go(this,'montes')">Montes Urales 415</div>
+    <div class="nl">Sistema</div>
+    <div class="ni" onclick="go(this,'compartir')">🔗 Compartir Online</div>
+  </div>
+  <div class="sf">v6 · Datos reales Excel · 18 Abr 2026</div>
+</div>
+<div class="main">
+<div class="topbar">
+  <div><div class="tb-t" id="pgt">Portafolio M2 — Inicio</div><div class="tb-s">5 propiedades · $30.4M+/mes · Abril 2026 activo (dentro de plazo)</div></div>
+  <div class="tb-r">
+    <input class="srch" placeholder="Buscar..." style="width:170px">
+    <button class="btn btg" onclick="go(document.querySelectorAll('.ni')[13],'compartir')">Compartir ↗</button>
+    <button class="btn bta">PDF</button>
+  </div>
+</div>
+<div class="body">
+<!-- INICIO -->
+<div class="pg on" id="pg-inicio">
+<div class="kg kg5">
+  <div class="k k-d"><div class="kl">Cartera total/mes</div><div class="kv" style="color:var(--gld)">$30.4M+</div><div class="ks">5 propiedades</div><div class="kb kb-g">+$452K INPC/mes</div></div>
+  <div class="k k-g"><div class="kl">Rec. ENE–MAR</div><div class="kv" style="color:var(--grn)">100%</div><div class="ks">$0 adeudo meses cerrados</div><div class="kb kb-g">Al corriente</div></div>
+  <div class="k k-g"><div class="kl">Adeudo real</div><div class="kv" style="color:var(--grn)">$0</div><div class="ks">Todo pagado · FVC UMBRAL ✓</div></div>
+  <div class="k k-t"><div class="kl">ABR cobrado a hoy</div><div class="kv" style="color:var(--tel)">$8.74M</div><div class="ks">Mes activo — dentro de plazo</div></div>
+  <div class="k k-d"><div class="kl">INPC extra/año</div><div class="kv" style="color:var(--gld)">$5.42M</div><div class="ks">4 meses · 63 locatarios</div></div>
+</div>
+<div class="pg-grid">
+  <div class="pc" onclick="go(document.querySelectorAll('.ni')[8],'asturimart')"><div class="pc-dot" style="background:var(--grn)"></div><div class="pc-n">01 · Asturimart</div><div class="pc-t">La Estación + Cielo Abierto</div><div class="pc-l">CDMX · 88 contratos</div><div class="pc-ks"><div class="pc-k"><div class="v" style="color:var(--grn)">100%</div><div class="l">ENE–MAR</div></div><div class="pc-k"><div class="v" style="color:var(--grn)">$0</div><div class="l">Adeudo</div></div><div class="pc-k"><div class="v" style="color:var(--gld)">$9.48M</div><div class="l">/mes</div></div></div></div>
+  <div class="pc" onclick="go(document.querySelectorAll('.ni')[9],'fvc')"><div class="pc-dot" style="background:var(--grn)"></div><div class="pc-n">02 · FVC</div><div class="pc-t">Fideicomiso Venustiano Carranza</div><div class="pc-l">CDMX · Hotel UMBRAL + locales</div><div class="pc-ks"><div class="pc-k"><div class="v" style="color:var(--grn)">100%</div><div class="l">ENE–MAR</div></div><div class="pc-k"><div class="v" style="color:var(--grn)">$375K</div><div class="l">ABR ✓</div></div><div class="pc-k"><div class="v" style="color:var(--gld)">$1.75M</div><div class="l">/mes total</div></div></div></div>
+  <div class="pc" onclick="go(document.querySelectorAll('.ni')[10],'pi')"><div class="pc-dot" style="background:var(--amb)"></div><div class="pc-n">03 · Parque Industrial</div><div class="pc-t">Parque Industrial M2</div><div class="pc-l">TJ · CDMX · Sureste · 25 inq.</div><div class="pc-ks"><div class="pc-k"><div class="v" style="color:var(--grn)">100%</div><div class="l">ENE–MAR</div></div><div class="pc-k"><div class="v" style="color:var(--amb)">$8.05M</div><div class="l">ABR a hoy</div></div><div class="pc-k"><div class="v" style="color:var(--gld)">$19.8M</div><div class="l">/mes</div></div></div></div>
+  <div class="pc" onclick="go(document.querySelectorAll('.ni')[11],'cuu')"><div class="pc-dot" style="background:var(--grn)"></div><div class="pc-n">04 · CUU</div><div class="pc-t">Chihuahua — Linkwork Complex</div><div class="pc-l">Chihuahua · 7 locatarios</div><div class="pc-ks"><div class="pc-k"><div class="v" style="color:var(--grn)">102%</div><div class="l">ENE–MAR</div></div><div class="pc-k"><div class="v" style="color:var(--grn)">$318K</div><div class="l">ABR ✓</div></div><div class="pc-k"><div class="v" style="color:var(--gld)">$308K</div><div class="l">/mes</div></div></div></div>
+  <div class="pc" onclick="go(document.querySelectorAll('.ni')[12],'montes')"><div class="pc-dot" style="background:var(--grn)"></div><div class="pc-n">05 · Montes Urales 415</div><div class="pc-t">Oficinas Corporativas CDMX</div><div class="pc-l">TURBOFIN · FLAMMA CORP.</div><div class="pc-ks"><div class="pc-k"><div class="v" style="color:var(--grn)">100%</div><div class="l">ENE–MAR</div></div><div class="pc-k"><div class="v" style="color:var(--grn)">$0</div><div class="l">Adeudo</div></div><div class="pc-k"><div class="v" style="color:var(--gld)">$453K</div><div class="l">/mes</div></div></div></div>
+</div>
+</div>
+<!-- REPORTE EJECUTIVO -->
+<div class="pg" id="pg-reporte">
+<div class="gb">✓ ENE–MAR 2026: $0 adeudo en todas las propiedades. FVC Hotel UMBRAL pagado. Abril = mes activo dentro de plazo.</div>
+<div class="kg kg4">
+  <div class="k k-d"><div class="kl">Cartera/mes</div><div class="kv" style="color:var(--gld)">$30.4M+</div></div>
+  <div class="k k-g"><div class="kl">Rec. ENE–MAR</div><div class="kv" style="color:var(--grn)">100%</div><div class="ks">$0 adeudo real</div></div>
+  <div class="k k-t"><div class="kl">ABR cobrado</div><div class="kv" style="color:var(--tel)">$8,738,627</div><div class="ks">42.2% · Mes activo</div></div>
+  <div class="k k-d"><div class="kl">INPC extra/año</div><div class="kv" style="color:var(--gld)">$5.42M</div></div>
+</div>
+<div class="tw"><div class="th"><div class="st">Consolidado ENE–MAR–ABR — datos reales del Excel</div></div>
+<div style="overflow-x:auto"><table><thead><tr><th>Propiedad</th><th>Pres./mes</th><th>ENE Real</th><th>FEB Real</th><th>MAR Real</th><th>% ENE-MAR</th><th>Adeudo</th><th>ABR Real</th><th>% ABR</th><th>Acum. Año</th></tr></thead><tbody>
+<tr><td><strong>Asturimart</strong></td><td>$9,480,000</td><td style="color:var(--grn)">$9,480,000</td><td style="color:var(--grn)">$9,480,000</td><td style="color:var(--grn)">$9,480,000</td><td style="color:var(--grn);font-weight:600">100%</td><td style="color:var(--grn)">$0</td><td style="color:var(--acc)">◷ Plazo</td><td>—</td><td>$28,440,000</td></tr>
+<tr><td><strong>FVC (3 locales+UMBRAL)</strong></td><td>$375,335</td><td style="color:var(--grn)">$374,931</td><td style="color:var(--grn)">$375,335</td><td style="color:var(--grn)">$375,335</td><td style="color:var(--grn);font-weight:600">99.96%</td><td style="color:var(--grn)">$0</td><td style="color:var(--grn)">$375,335</td><td style="color:var(--grn)">100%</td><td>$1,500,936</td></tr>
+<tr><td><strong>Parque Industrial M2</strong></td><td>$19,760,968</td><td style="color:var(--grn)">$19,782,581</td><td style="color:var(--grn)">$19,725,053</td><td style="color:var(--grn)">$19,799,684</td><td style="color:var(--grn);font-weight:600">100.04%</td><td style="color:var(--grn)">$0</td><td style="color:var(--amb)">$8,045,080</td><td style="color:var(--amb)">40.7%</td><td>$59,307,318</td></tr>
+<tr><td><strong>CUU — Chihuahua</strong></td><td>$307,918</td><td style="color:var(--grn)">$310,922</td><td style="color:var(--grn)">$310,951</td><td style="color:var(--grn)">$318,212</td><td style="color:var(--grn);font-weight:600">101.77%</td><td style="color:var(--grn)">$0</td><td style="color:var(--grn)">$318,212</td><td style="color:var(--grn)">103.3%</td><td>$1,258,297</td></tr>
+<tr><td><strong>Montes Urales 415</strong></td><td>$453,354</td><td style="color:var(--grn)">$453,354</td><td style="color:var(--grn)">$453,354</td><td style="color:var(--grn)">$453,354</td><td style="color:var(--grn);font-weight:600">100%</td><td style="color:var(--grn)">$0</td><td style="color:var(--acc)">◷ Plazo</td><td>—</td><td>$1,360,062</td></tr>
+<tr style="background:var(--s2)"><td style="font-weight:600">TOTAL PORTAFOLIO</td><td style="font-weight:600;color:var(--gld)">$30.4M+</td><td style="font-weight:600;color:var(--grn)">$30.4M+</td><td style="font-weight:600;color:var(--grn)">$30.3M+</td><td style="font-weight:600;color:var(--grn)">$30.4M+</td><td style="font-weight:600;color:var(--grn)">100%</td><td style="font-weight:600;color:var(--grn)">$0</td><td style="font-weight:600;color:var(--amb)">$8,738,627</td><td style="font-weight:600;color:var(--amb)">43.3%</td><td style="font-weight:600;color:var(--gld)">$91,866,613</td></tr>
+</tbody></table></div></div>
+</div>
+<!-- COBRANZA -->
+<div class="pg" id="pg-cobranza">
+<div class="gb">✓ ENE–MAR 100% cobrado · $0 adeudo real · Abril = mes activo, todo dentro de plazo</div>
+<div class="kg kg4">
+  <div class="k k-g"><div class="kl">Adeudo meses cerrados</div><div class="kv" style="color:var(--grn)">$0</div><div class="ks">ENE · FEB · MAR al 100%</div></div>
+  <div class="k k-t"><div class="kl">ABR cobrado a hoy</div><div class="kv" style="color:var(--tel)">$8,738,627</div><div class="ks">Dentro de plazo</div></div>
+  <div class="k k-a"><div class="kl">ABR % cobro</div><div class="kv" style="color:var(--acc)">42.2%</div><div class="ks">Mes activo</div></div>
+  <div class="k k-o"><div class="kl">PI pendiente ABR</div><div class="kv" style="color:var(--amb)">~$11.7M</div><div class="ks">PATIO VW · UVA ROMA · FISO</div></div>
+</div>
+<div class="tw"><div class="th"><div class="st a">Detalle ABR por propiedad — datos reales del Excel 18 Abr 2026</div></div>
+<table><thead><tr><th>Propiedad</th><th>Presupuesto</th><th>ABR cobrado</th><th>ABR pendiente</th><th>Estado</th></tr></thead><tbody>
+<tr><td><strong>Asturimart</strong></td><td>$9,480,000</td><td style="color:var(--acc)">◷ En plazo</td><td>—</td><td><span class="bd bb">◷ Mes activo</span></td></tr>
+<tr><td><strong>FVC (3 locales activos)</strong></td><td>$375,335</td><td style="color:var(--grn);font-weight:600">$375,335</td><td style="color:var(--grn)">$0</td><td><span class="bd bg">✓ Cobrado 100%</span></td></tr>
+<tr><td><strong>Parque Industrial M2</strong></td><td>$19,760,968</td><td style="color:var(--amb);font-weight:600">$8,045,080</td><td style="color:var(--amb)">$11,715,888</td><td><span class="bd ba">◷ Parcial — en plazo</span></td></tr>
+<tr><td><strong>CUU — Chihuahua</strong></td><td>$307,918</td><td style="color:var(--grn);font-weight:600">$318,212</td><td style="color:var(--grn)">$0</td><td><span class="bd bg">✓ Cobrado 103.3%</span></td></tr>
+<tr><td><strong>Montes Urales 415</strong></td><td>$453,354</td><td style="color:var(--acc)">◷ En plazo</td><td>—</td><td><span class="bd bb">◷ Mes activo</span></td></tr>
+<tr style="background:var(--s2)"><td style="font-weight:600">TOTAL</td><td style="font-weight:600;color:var(--gld)">$30.4M+</td><td style="font-weight:600;color:var(--amb)">$8,738,627</td><td style="font-weight:600;color:var(--amb)">~$21.7M+</td><td style="font-weight:600;color:var(--acc)">◷ Mes activo</td></tr>
+</tbody></table></div>
+<div class="ib"><strong>Nota:</strong> El 42.2% de recaudación en Abril NO indica morosidad. El mes está activo y todos los inquilinos que no han pagado están dentro de su plazo contractual. El pendiente PI corresponde principalmente a PATIO VW ($8M), UVA ROMA ($1.4M) y FISO 4151 ($1.6M).</div>
+</div>
+<!-- COBRANZA CIELO ABIERTO -->
+<div class="pg" id="pg-cobrca">
+<div class="ib"><strong>Cobranza de Cielo Abierto — Enero a Abril 2026.</strong> · Listado preliminar con 21 locatarios identificados positivamente como Cielo Abierto (de data INPC). <strong>Pendiente validar lista completa y montos reales mensuales con Google Sheet "dashboard asturimart".</strong></div>
+<div class="kg kg4">
+  <div class="k k-a"><div class="kl">Locatarios identificados</div><div class="kv" style="color:var(--acc)" id="ca-kloc">21</div><div class="ks">Pendiente validación</div></div>
+  <div class="k k-d"><div class="kl">Presup./mes</div><div class="kv" style="color:var(--gld)" id="ca-kpre">—</div><div class="ks">s/IVA total</div></div>
+  <div class="k k-g"><div class="kl">Cobrado ENE–MAR</div><div class="kv" style="color:var(--grn)" id="ca-kene">—</div><div class="ks">100% según consolidado</div></div>
+  <div class="k k-t"><div class="kl">ABR cobrado a hoy</div><div class="kv" style="color:var(--tel)" id="ca-kabr">—</div><div class="ks" id="ca-kpct">—</div></div>
+</div>
+<div class="itabs">
+  <div class="itab ca-anio on" onclick="caTab(this,'anio')">📅 Cobranza del año</div>
+  <div class="itab ca-abr" onclick="caTab(this,'abr')">🗓 Abril 2026 — pagado vs pendiente</div>
+  <div class="itab ca-atr" onclick="caTab(this,'atr')">⚠ Adeudos atrasados</div>
+</div>
+<div class="casec on" id="cs-anio">
+<div class="tw"><div class="th"><div class="st">Cobranza mensual · Enero → Abril 2026</div><input class="srch" placeholder="Buscar locatario..." oninput="fCA('anio',this.value)"></div>
+<div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Local</th><th>Locatario</th><th style="text-align:right">Presup./mes</th><th style="text-align:right">ENE</th><th style="text-align:right">FEB</th><th style="text-align:right">MAR</th><th style="text-align:right">ABR</th><th style="text-align:right">Acum. año</th></tr></thead><tbody id="ca-anio-body"></tbody></table></div></div>
+</div>
+<div class="casec" id="cs-abr">
+<div class="kg kg3">
+  <div class="k k-g"><div class="kl">Pagado Abril</div><div class="kv" style="color:var(--grn)" id="ca-abr-pag">—</div><div class="ks" id="ca-abr-npag">— locatarios</div></div>
+  <div class="k k-o"><div class="kl">Por cobrar Abril</div><div class="kv" style="color:var(--amb)" id="ca-abr-pen">—</div><div class="ks" id="ca-abr-npen">— locatarios · en plazo</div></div>
+  <div class="k k-d"><div class="kl">Total Abril</div><div class="kv" style="color:var(--gld)" id="ca-abr-tot">—</div><div class="ks">Presup./mes Cielo Abierto</div></div>
+</div>
+<div class="tw"><div class="th"><div class="st a">Detalle por locatario · Abril 2026</div><input class="srch" placeholder="Buscar..." oninput="fCA('abr',this.value)"></div>
+<div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Local</th><th>Locatario</th><th style="text-align:right">Monto Abril</th><th>Estado</th><th style="text-align:right">Pagado</th><th style="text-align:right">Adeudo</th></tr></thead><tbody id="ca-abr-body"></tbody></table></div></div>
+</div>
+<div class="casec" id="cs-atr">
+<div class="gb" id="ca-atr-msg">✓ Sin adeudos de meses atrasados en Cielo Abierto. ENE–MAR al 100% según consolidado.</div>
+<div class="tw" id="ca-atr-tw" style="display:none"><div class="th"><div class="st r">Adeudos de meses anteriores al corriente</div></div>
+<div style="overflow-x:auto"><table><thead><tr><th>Local</th><th>Locatario</th><th>Mes adeudado</th><th style="text-align:right">Monto</th><th>Días atraso</th><th>Notas</th></tr></thead><tbody id="ca-atr-body"></tbody></table></div></div>
+</div>
+</div>
+<!-- INPC -->
+<div class="pg" id="pg-inpc">
+<div class="ib"><strong>Orden correcto: Enero → Febrero → Marzo → Abril</strong> · 63 locatarios · $451,746/mes adicional · $5.42M/año</div>
+<div class="kg" style="grid-template-columns:repeat(5,1fr)">
+  <div class="k k-a"><div class="kl">Enero 3.80%</div><div class="kv" style="color:var(--acc)">15 loc.</div><div class="ks">+$125,204/mes ✓</div></div>
+  <div class="k k-g"><div class="kl">✅ Febrero 3.69%</div><div class="kv" style="color:var(--grn)">17 loc.</div><div class="ks">+$80,782/mes · TODO ✓</div></div>
+  <div class="k k-g"><div class="kl">Marzo 3.79%</div><div class="kv" style="color:var(--grn)">14 loc.</div><div class="ks">+$163,813/mes ✓</div></div>
+  <div class="k k-o"><div class="kl">Abril 4.02%</div><div class="kv" style="color:var(--amb)">17 loc.</div><div class="ks">+$81,947/mes</div></div>
+  <div class="k k-d"><div class="kl">Total 4 meses</div><div class="kv" style="color:var(--gld)">$451,746</div><div class="ks">+$5.42M/año</div></div>
+</div>
+<div class="sim4">
+  <div class="sc"><div style="font-size:9px;font-weight:500;color:var(--acc);margin-bottom:5px">Enero</div><input type="number" id="pe" value="3.80" step="0.01" class="sin" oninput="recI()"><div style="font-size:11px;font-weight:600;color:var(--tel);margin-top:4px" id="re">$125,204</div></div>
+  <div class="sc feb-sc"><div style="font-size:9px;font-weight:500;color:var(--grn);margin-bottom:5px">✅ Febrero</div><input type="number" id="pf" value="3.69" step="0.01" class="sin" oninput="recI()"><div style="font-size:11px;font-weight:600;color:var(--tel);margin-top:4px" id="rf">$80,782</div></div>
+  <div class="sc"><div style="font-size:9px;font-weight:500;color:var(--grn);margin-bottom:5px">Marzo</div><input type="number" id="pm" value="3.79" step="0.01" class="sin" oninput="recI()"><div style="font-size:11px;font-weight:600;color:var(--tel);margin-top:4px" id="rm">$163,813</div></div>
+  <div class="sc"><div style="font-size:9px;font-weight:500;color:var(--amb);margin-bottom:5px">Abril</div><input type="number" id="pa" value="4.02" step="0.01" class="sin" oninput="recI()"><div style="font-size:11px;font-weight:600;color:var(--tel);margin-top:4px" id="ra">$81,947</div></div>
+</div>
+<div style="background:var(--s2);border-radius:5px;padding:9px 14px;display:flex;gap:20px;margin-bottom:12px">
+  <div><span style="font-size:9px;color:var(--t3)">Total/mes: </span><span style="font-size:15px;font-weight:600;color:var(--tel)" id="it">$451,746</span></div>
+  <div><span style="font-size:9px;color:var(--t3)">Total/año: </span><span style="font-size:15px;font-weight:600;color:var(--gld)" id="ia">$5,420,948</span></div>
+</div>
+<div class="itabs">
+  <div class="itab it-all on" onclick="iTab(this,'all')">📋 Todos</div>
+  <div class="itab it-ene" onclick="iTab(this,'ene')">Enero 3.80%</div>
+  <div class="itab it-feb" onclick="iTab(this,'feb')">✅ Febrero 3.69%</div>
+  <div class="itab it-mar" onclick="iTab(this,'mar')">Marzo 3.79%</div>
+  <div class="itab it-abr" onclick="iTab(this,'abr')">Abril 4.02%</div>
+</div>
+<div class="isec on" id="is-all"><div class="tw"><div class="th"><div class="st a">Ene→Feb→Mar→Abr · 63 locatarios</div><input class="srch" placeholder="Buscar..." oninput="fI(this.value)"></div><table><thead><tr><th>Mes</th><th>Propiedad</th><th>Local</th><th>Locatario</th><th>Renta ant.</th><th>Nueva renta</th><th>Dif./mes</th><th>Dif./año</th><th>Estado</th></tr></thead><tbody id="ib-all"></tbody></table></div></div>
+<div class="isec" id="is-ene"><div class="tw"><div class="th"><div class="st">Enero 2026 — 3.80% — 15 locatarios</div></div><table><thead><tr><th>#</th><th>Propiedad</th><th>Local</th><th>Locatario</th><th>Renta ant.</th><th>Nueva renta</th><th>Dif./mes</th><th>Dif./año</th></tr></thead><tbody id="ib-ene"></tbody></table></div></div>
+<div class="isec" id="is-feb"><div class="gb">✅ Febrero 2026 — INPC 3.69% — 17 locatarios La Estación — TODOS COBRADOS · Facturas XML confirmadas (hcolula@ipm2.mx)</div><div class="tw"><div class="th"><div class="st g">Febrero 2026 — RFC confirmados de facturas</div></div><table><thead><tr><th>#</th><th>Local</th><th>Locatario</th><th>RFC Receptor</th><th>Renta anterior</th><th>Nueva renta</th><th>Dif./mes</th><th>Dif./año</th></tr></thead><tbody id="ib-feb"></tbody></table></div></div>
+<div class="isec" id="is-mar"><div class="tw"><div class="th"><div class="st g">Marzo 2026 — 3.79% — 14 locatarios</div></div><table><thead><tr><th>#</th><th>Propiedad</th><th>Local</th><th>Locatario</th><th>Renta ant.</th><th>Nueva renta</th><th>Dif./mes</th><th>Dif./año</th><th>Estado</th></tr></thead><tbody id="ib-mar"></tbody></table></div></div>
+<div class="isec" id="is-abr"><div class="wb">⚠ 4 pendientes: KJ BEAUTY + FIDEICOMISO 4151 (#REF) · GIMNASIO 2 + AMORE AMORE (tema legal CUU)</div><div class="tw"><div class="th"><div class="st a">Abril 2026 — 4.02% — 17 locatarios</div></div><table><thead><tr><th>#</th><th>Propiedad</th><th>Local</th><th>Locatario</th><th>Renta ant.</th><th>Nueva renta</th><th>Dif./mes</th><th>Estado</th></tr></thead><tbody id="ib-abr"></tbody></table></div></div>
+</div>
+<!-- RENT ROLL -->
+<div class="pg" id="pg-rentroll">
+<div class="kg kg4">
+  <div class="k k-d"><div class="kl">Contratos</div><div class="kv" style="color:var(--gld)">88</div><div class="ks">Cielo Abierto Mar 2026</div></div>
+  <div class="k k-a"><div class="kl">m²</div><div class="kv" style="color:var(--acc)">20,128</div></div>
+  <div class="k k-r"><div class="kl">Vencen &lt;12m</div><div class="kv" style="color:var(--red)">27</div><div class="ks">CASSAVA Oct26 · KINETIC Jul26</div></div>
+  <div class="k k-o"><div class="kl">12–24 meses</div><div class="kv" style="color:var(--amb)">52</div></div>
+</div>
+<div class="wb">⚠ CASSAVA ROOTS vence Oct 2026 · KINETIC HEALTH vence Jul 2026 — iniciar renovación urgente.</div>
+<div class="tw"><div class="th"><div class="st r">88 contratos en orden del Rent Roll Mar 2026</div><input class="srch" placeholder="Buscar..." oninput="fRR(this.value)"></div>
+<div style="overflow-x:auto"><table><thead><tr><th>No.</th><th>Arrendatario</th><th>m²</th><th>Renta s/IVA</th><th>Total c/IVA</th><th>F. Inicio</th><th>F. Fin</th><th>Meses rest.</th><th>Alerta</th></tr></thead><tbody id="rr-body"></tbody></table></div></div>
+</div>
+<!-- FACTURAS HUGO -->
+<div class="pg" id="pg-facturas">
+<div class="ib"><strong>Facturas reales encontradas en Gmail de Hugo Colula</strong> (hcolula@ipm2.mx) · Emisor: facturacionferruco@gmail.com · 3 series: F · FCI&P · M · Período Feb–Abr 2026</div>
+<div class="kg kg4">
+  <div class="k k-a"><div class="kl">Total facturas</div><div class="kv" style="color:var(--acc)">97</div><div class="ks">Feb + Mar + Abr 2026</div></div>
+  <div class="k k-g"><div class="kl">Serie F (El Cubo)</div><div class="kv" style="color:var(--grn)">2</div><div class="ks">F 323 · F 328</div></div>
+  <div class="k k-t"><div class="kl">Serie FCI&P</div><div class="kv" style="color:var(--tel)">36</div><div class="ks">1086 a 1193</div></div>
+  <div class="k k-o"><div class="kl">Serie M</div><div class="kv" style="color:var(--amb)">59</div><div class="ks">4737 a 4988</div></div>
+</div>
+<div class="tw"><div class="th"><div class="st">Registro de facturas — fuente: Gmail búsqueda real</div><input class="srch" placeholder="Buscar..." oninput="fFac(this.value)"></div>
+<table><thead><tr><th>No. Factura</th><th>Serie</th><th>Fecha</th><th>Mes</th><th>Destinatario</th><th>Nota / Receptor</th></tr></thead><tbody id="fac-body"></tbody></table></div>
+</div>
+<!-- CLIENTES -->
+<div class="pg" id="pg-clientes">
+<div class="ib"><strong>La Estación + Cielo Abierto = Asturimart · AST-001 a AST-088.</strong> El locatario escribe su número en el campo "Concepto" al transferir.</div>
+<div class="kg kg3">
+  <div class="k k-a"><div class="kl">Asturimart (88)</div><div class="kv" style="color:var(--acc)">AST-001 a AST-088</div></div>
+  <div class="k k-g"><div class="kl">FVC · PI · CUU · MU</div><div class="kv" style="color:var(--grn)">49+</div></div>
+  <div class="k k-d"><div class="kl">Total portafolio</div><div class="kv" style="color:var(--gld)">137+</div></div>
+</div>
+<div class="tw"><div class="th"><div class="st">Directorio completo</div>
+<div style="display:flex;gap:6px"><select class="srch" style="width:120px" onchange="filterP(this.value)"><option value="">Todas</option><option value="Asturimart">Asturimart</option><option value="FVC">FVC</option><option value="Parque">Parque Industrial</option><option value="CUU">CUU</option><option value="Montes">Montes Urales</option></select>
+<input class="srch" placeholder="Buscar nombre..." oninput="fNC(this.value)"></div></div>
+<div style="overflow-x:auto"><table><thead><tr><th>No. Cliente</th><th>Propiedad</th><th>No. Local</th><th>Locatario</th><th>Renta s/IVA</th><th>Total c/IVA</th><th>m²</th><th>F. Fin</th></tr></thead><tbody id="nc-body"></tbody></table></div></div>
+</div>
+<!-- ASTURIMART -->
+<div class="pg" id="pg-asturimart">
+<div class="gb">Asturimart — La Estación + Cielo Abierto · 88 contratos · 100% cobrado ENE–MAR · INPC Feb aplicado y cobrado · Abril dentro de plazo.</div>
+<div class="kg kg4">
+  <div class="k k-g"><div class="kl">ENE–MAR</div><div class="kv" style="color:var(--grn)">100%</div></div>
+  <div class="k k-g"><div class="kl">Adeudo</div><div class="kv" style="color:var(--grn)">$0</div></div>
+  <div class="k k-a"><div class="kl">Abril</div><div class="kv" style="color:var(--acc)">◷ Plazo</div></div>
+  <div class="k k-d"><div class="kl">Presup./mes</div><div class="kv" style="color:var(--gld)">$9.48M</div></div>
+</div>
+<div class="tw"><div class="th"><div class="st g">88 locatarios — orden Rent Roll Mar 2026</div><input class="srch" placeholder="Buscar..." oninput="fAST(this.value)"></div>
+<div style="overflow-x:auto"><table><thead><tr><th>No.</th><th>Local</th><th>Locatario</th><th>Renta s/IVA</th><th>Total c/IVA</th><th>m²</th><th>ENE</th><th>FEB</th><th>MAR</th><th>ABR</th><th>F. Fin</th></tr></thead><tbody id="ast-body"></tbody></table></div></div>
+</div>
+<!-- FVC -->
+<div class="pg" id="pg-fvc">
+<div class="gb"><strong>FVC — Todo al corriente · $0 adeudo · Hotel UMBRAL pagado al 100% · Mario confirmó ENE·FEB·MAR pagados.</strong></div>
+<div class="kg kg4">
+  <div class="k k-g"><div class="kl">ENE–MAR</div><div class="kv" style="color:var(--grn)">99.96%</div></div>
+  <div class="k k-g"><div class="kl">ABR cobrado</div><div class="kv" style="color:var(--grn)">$375,335</div><div class="ks">100% ✓</div></div>
+  <div class="k k-g"><div class="kl">Adeudo real</div><div class="kv" style="color:var(--grn)">$0</div></div>
+  <div class="k k-d"><div class="kl">Acum. año</div><div class="kv" style="color:var(--gld)">$1,500,936+</div></div>
+</div>
+<div class="tw"><div class="th"><div class="st g">Locatarios FVC — datos reales del Excel</div></div>
+<table><thead><tr><th>No. Cliente</th><th>Locatario</th><th>Concepto</th><th>Renta</th><th>Mtto</th><th>Total/mes</th><th>ENE Real</th><th>FEB Real</th><th>MAR Real</th><th>ABR Real</th><th>Adeudo</th></tr></thead><tbody>
+<tr><td style="color:var(--acc);font-weight:600">FVC-1001</td><td><strong>ATISBO POLANCO (OJO DE AGUA)</strong></td><td style="color:var(--t3)">Arrendamiento</td><td>$129,920</td><td>$0</td><td style="font-weight:600">$129,920</td><td style="color:var(--grn)">$129,920</td><td style="color:var(--grn)">$129,920</td><td style="color:var(--grn)">$129,920</td><td style="color:var(--grn);font-weight:600">$129,920</td><td style="color:var(--grn)">—</td></tr>
+<tr><td style="color:var(--acc);font-weight:600">FVC-1002</td><td><strong>EL CUBO CONCEPT STORE SA DE CV</strong></td><td style="color:var(--t3)">Arrend.+Mtto</td><td>$122,453</td><td>$9,796</td><td style="font-weight:600">$132,249</td><td style="color:var(--grn)">$132,047</td><td style="color:var(--grn)">$132,451</td><td style="color:var(--grn)">$132,451</td><td style="color:var(--grn);font-weight:600">$132,451</td><td style="color:var(--grn)">—</td></tr>
+<tr><td style="color:var(--acc);font-weight:600">FVC-1003</td><td><strong>GODA ALIMENTOS SA DE CV</strong></td><td style="color:var(--t3)">Arrend.+Mtto</td><td>$104,597</td><td>$8,368</td><td style="font-weight:600">$112,965</td><td style="color:var(--grn)">$112,964</td><td style="color:var(--grn)">$112,964</td><td style="color:var(--grn)">$112,964</td><td style="color:var(--grn);font-weight:600">$112,964</td><td style="color:var(--grn)">—</td></tr>
+<tr style="background:rgba(14,165,114,.04)"><td style="color:var(--acc);font-weight:600">FVC-1004</td><td><strong style="color:var(--grn)">HOTEL UMBRAL (OPERADORA)</strong></td><td style="color:var(--t3)">Arrendamiento Hotel</td><td>$945,400</td><td>$0</td><td style="font-weight:600;color:var(--gld)">$1,096,664</td><td style="color:var(--grn)">✓ Pagado</td><td style="color:var(--grn)">✓ Pagado</td><td style="color:var(--grn)">✓ Pagado</td><td style="color:var(--grn);font-weight:600">✓ Pagado</td><td style="color:var(--grn);font-weight:600">$0</td></tr>
+<tr><td style="color:var(--acc);font-weight:600">FVC-1005</td><td>PAGARÉ / OTROS INGRESOS</td><td style="color:var(--t3)">Variable</td><td>$193,600</td><td>$0</td><td style="font-weight:600">$193,600</td><td style="color:var(--grn)">✓</td><td style="color:var(--grn)">✓</td><td style="color:var(--grn)">✓</td><td style="color:var(--grn)">✓</td><td style="color:var(--grn)">$0</td></tr>
+<tr class="ttl-r"><td colspan="5">TOTAL FVC</td><td style="color:var(--gld)">$1,665,398</td><td style="color:var(--grn)">$374,931+</td><td style="color:var(--grn)">$375,335+</td><td style="color:var(--grn)">$375,335+</td><td style="color:var(--grn);font-weight:600">$375,335+</td><td style="color:var(--grn)">$0</td></tr>
+</tbody></table></div>
+</div>
+<!-- PARQUE INDUSTRIAL -->
+<div class="pg" id="pg-pi">
+<div class="gb">Parque Industrial M2 · ENE–MAR al 100% · $0 adeudo meses cerrados · ABR parcial dentro de plazo</div>
+<div class="kg kg4">
+  <div class="k k-g"><div class="kl">ENE–MAR</div><div class="kv" style="color:var(--grn)">100.04%</div><div class="ks">$0 adeudo</div></div>
+  <div class="k k-o"><div class="kl">ABR cobrado</div><div class="kv" style="color:var(--amb)">$8,045,080</div><div class="ks">40.7% — plazo vigente</div></div>
+  <div class="k k-a"><div class="kl">ABR pendiente</div><div class="kv" style="color:var(--acc)">◷ Plazo</div><div class="ks">PATIO VW · ROMA · FISO</div></div>
+  <div class="k k-d"><div class="kl">Acum. ENE–MAR</div><div class="kv" style="color:var(--gld)">$59,307,318</div></div>
+</div>
+<div class="tw"><div class="th"><div class="st">25 inquilinos — datos reales del Excel</div><input class="srch" placeholder="Buscar..." oninput="fPI(this.value)"></div>
+<div style="overflow-x:auto"><table><thead><tr><th>No.</th><th>Inquilino</th><th>Ciudad</th><th>Renta/mes</th><th>ENE Real</th><th>FEB Real</th><th>MAR Real</th><th>ABR Estado</th><th>Adeudo</th><th>Clasificación</th></tr></thead><tbody id="pi-body"></tbody></table></div></div>
+</div>
+<!-- CUU -->
+<div class="pg" id="pg-cuu">
+<div class="gb">CUU — Linkwork Complex Chihuahua · 7 locatarios · ENE–MAR al 101.77% · ABR cobrado al 103.3%</div>
+<div class="kg kg3">
+  <div class="k k-g"><div class="kl">ENE–MAR</div><div class="kv" style="color:var(--grn)">101.77%</div></div>
+  <div class="k k-g"><div class="kl">ABR cobrado</div><div class="kv" style="color:var(--grn)">$318,212</div><div class="ks">103.3% ✓</div></div>
+  <div class="k k-d"><div class="kl">Acum. año</div><div class="kv" style="color:var(--gld)">$1,258,297</div></div>
+</div>
+<div class="tw"><div class="th"><div class="st g">CUU — 7 locatarios</div></div>
+<table><thead><tr><th>No.</th><th>Inquilino</th><th>Segmento</th><th>Renta</th><th>ENE</th><th>FEB</th><th>MAR</th><th>ABR Real</th><th>Acum.</th></tr></thead><tbody>
+<tr><td style="color:var(--acc)">CUU-1001</td><td><strong>LINKWORK</strong></td><td>Coworking</td><td>$150,500</td><td style="color:var(--grn)">$150,500</td><td style="color:var(--grn)">$150,500</td><td style="color:var(--grn)">$156,206</td><td style="color:var(--grn);font-weight:600">$156,206</td><td>$613,412</td></tr>
+<tr><td style="color:var(--acc)">CUU-1002</td><td>COLOREARTE</td><td>Servicios</td><td>$8,849</td><td style="color:var(--grn)">$8,849</td><td style="color:var(--grn)">$8,849</td><td style="color:var(--grn)">$8,849</td><td style="color:var(--grn);font-weight:600">$8,849</td><td>$35,396</td></tr>
+<tr><td style="color:var(--acc)">CUU-1003</td><td>CHOPO</td><td>Servicios</td><td>$19,295</td><td style="color:var(--grn)">$19,295</td><td style="color:var(--grn)">$19,295</td><td style="color:var(--grn)">$19,295</td><td style="color:var(--grn);font-weight:600">$19,295</td><td>$77,180</td></tr>
+<tr><td style="color:var(--acc)">CUU-1004</td><td><strong>GYM</strong></td><td>Fitness</td><td>$82,391</td><td style="color:var(--grn)">$85,431</td><td style="color:var(--grn)">$85,431</td><td style="color:var(--grn)">$85,431</td><td style="color:var(--grn);font-weight:600">$85,431</td><td>$341,724</td></tr>
+<tr><td style="color:var(--acc)">CUU-1005</td><td>AMORE AMORE</td><td>Belleza</td><td>$6,921</td><td style="color:var(--grn)">$6,914</td><td style="color:var(--grn)">$6,914</td><td style="color:var(--grn)">$7,228</td><td style="color:var(--grn);font-weight:600">$7,228</td><td>$28,284</td></tr>
+<tr><td style="color:var(--acc)">CUU-1006</td><td>SPA</td><td>Spa</td><td>$9,081</td><td style="color:var(--grn)">$9,052</td><td style="color:var(--grn)">$9,081</td><td style="color:var(--grn)">$9,081</td><td style="color:var(--grn);font-weight:600">$9,081</td><td>$36,295</td></tr>
+<tr><td style="color:var(--acc)">CUU-1007</td><td><strong>GYM 2.0</strong></td><td>Fitness</td><td>$30,881</td><td style="color:var(--grn)">$30,881</td><td style="color:var(--grn)">$30,881</td><td style="color:var(--grn)">$32,122</td><td style="color:var(--grn);font-weight:600">$32,122</td><td>$126,006</td></tr>
+<tr class="ttl-r"><td colspan="3">TOTAL CUU</td><td>$307,918</td><td style="color:var(--grn)">$310,922</td><td style="color:var(--grn)">$310,951</td><td style="color:var(--grn)">$318,212</td><td style="color:var(--grn);font-weight:600">$318,212</td><td style="color:var(--gld)">$1,258,297</td></tr>
+</tbody></table></div>
+</div>
+<!-- MONTES URALES -->
+<div class="pg" id="pg-montes">
+<div class="gb">Montes Urales 415 — Oficinas CDMX · 100% cobrado ENE–MAR · INPC Ene+Mar aplicados · Abril dentro de plazo</div>
+<div class="kg kg3">
+  <div class="k k-g"><div class="kl">ENE–MAR</div><div class="kv" style="color:var(--grn)">100%</div></div>
+  <div class="k k-a"><div class="kl">ABR</div><div class="kv" style="color:var(--acc)">◷ Plazo</div></div>
+  <div class="k k-t"><div class="kl">INPC dif./mes</div><div class="kv" style="color:var(--tel)">$41,956</div></div>
+</div>
+<div class="tw"><div class="th"><div class="st g">Locatarios Montes Urales 415</div></div>
+<table><thead><tr><th>No.</th><th>Locatario</th><th>Piso</th><th>Renta s/IVA</th><th>IVA</th><th>Total/mes</th><th>ENE</th><th>FEB</th><th>MAR</th><th>INPC</th><th>ABR</th></tr></thead><tbody>
+<tr><td style="color:var(--acc);font-weight:600">MU-001</td><td><strong>TURBOFIN</strong></td><td>Piso 1</td><td>$329,193</td><td style="color:var(--t3)">$52,671</td><td style="font-weight:600;color:var(--gld)">$381,864</td><td><span class="bd bg">✓</span></td><td><span class="bd bg">✓</span></td><td><span class="bd bg">✓</span></td><td style="color:var(--tel);font-size:9px">Ene+Mar ✓</td><td><span class="bd bb">◷</span></td></tr>
+<tr><td style="color:var(--acc);font-weight:600">MU-002</td><td><strong>FLAMMA CORPORATION</strong></td><td>Piso 3</td><td>$61,629</td><td style="color:var(--t3)">$9,861</td><td style="font-weight:600;color:var(--gld)">$71,490</td><td><span class="bd bg">✓</span></td><td><span class="bd bg">✓</span></td><td><span class="bd bg">✓</span></td><td style="color:var(--tel);font-size:9px">Ene+Mar ✓</td><td><span class="bd bb">◷</span></td></tr>
+<tr class="ttl-r"><td colspan="5">TOTAL MONTES URALES</td><td style="color:var(--gld)">$453,354</td><td colspan="5"></td></tr>
+</tbody></table></div>
+</div>
+<!-- COMPARTIR -->
+<div class="pg" id="pg-compartir">
+<div class="ib"><strong>Opciones para compartir con el Consejo de Administración.</strong></div>
+<div class="kg kg2">
+  <div class="k k-a" style="padding:14px"><div style="font-size:9px;font-weight:600;color:var(--acc);margin-bottom:5px">⭐ Recomendado</div><div style="font-size:12px;font-weight:500;margin:5px 0">Google Looker Studio</div><div style="font-size:10px;color:var(--t2);line-height:1.6">Conectas tu Google Sheets. Link gratuito compartible. Tiempo real. El Consejo lo abre sin cuenta Google.<br><span style="color:var(--grn)">✓ Gratis · ✓ Tiempo real · ✓ Link directo</span></div></div>
+  <div class="k k-g" style="padding:14px"><div style="font-size:12px;font-weight:500;margin-bottom:5px">Google Sites — privado</div><div style="font-size:10px;color:var(--t2);line-height:1.6">Con contraseña Google. Control total de acceso.<br><span style="color:var(--grn)">✓ Gratis · ✓ Control de acceso</span></div></div>
+</div>
+</div>
+</div></div></div>
+<script>
+const fmt=n=>n?'$'+Math.round(n).toLocaleString('es-MX'):'—';
+const fmt2=n=>n?'$'+n.toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2}):'—';
+const TITLES={inicio:'Portafolio M2 — Vista General',reporte:'Reporte Ejecutivo',cobranza:'Cobranza Consolidada — Datos Reales',cobrca:'Cobranza Cielo Abierto — Enero → Abril 2026',inpc:'INPC Aumentos — Ene→Feb→Mar→Abr',rentroll:'Rent Roll — 88 contratos',facturas:'Facturas Hugo Colula',clientes:'Números de Cliente',asturimart:'Asturimart — La Estación + Cielo Abierto',fvc:'FVC — Todo al corriente · $0 adeudo',pi:'Parque Industrial M2',cuu:'CUU — Chihuahua',montes:'Montes Urales 415',compartir:'Compartir Online'};
+function go(el,id){document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));if(el)el.classList.add('on');document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));document.getElementById('pg-'+id)?.classList.add('on');document.getElementById('pgt').textContent=TITLES[id]||id;}
+function iTab(el,id){document.querySelectorAll('.itab').forEach(t=>t.classList.remove('on'));el.classList.add('on');document.querySelectorAll('.isec').forEach(s=>s.classList.remove('on'));document.getElementById('is-'+id)?.classList.add('on');}
+// ── RENT ROLL 88 EN ORDEN ──
+const RR=[[1,'L1','CITY CAFÉ',93321,108252,146,'2022-02-01','2027-02-01'],[2,'L1B','SPORT CITY S.A. DE C.V.',1054662,1223408,3988,'2022-02-01','2027-02-01'],[3,'L3','STARBUCKS COFFEE',86483,100320,185,'2024-03-01','2027-03-01'],[4,'L4','EL CAMARÓN BUCHÓN',212594,246609,590.54,'2024-04-13','2027-04-12'],[5,'L5','SALUCITA',81391,94414,154,'2025-02-01','2028-02-01'],[6,'L6','EXE CENTRO CAMBIARIO',22812,26462,30,'2023-04-27','2027-04-26'],[7,'L7','BAB',44145,51208,92.77,'2024-11-13','2027-11-01'],[8,'L8','MVS MUSIC SCHOOL',44357,51454,78.61,'2024-10-02','2029-10-01'],[9,'L9','SUGAR & CO NAIL BAR',38182,44292,67.4,'2023-05-01','2027-04-26'],[10,'L10','ARUMA',91125,105705,202.5,'2025-06-03','2030-06-03'],[11,'L11','CICLÓPOLIS',82741,95979,214,'2021-09-01','2027-05-08'],[12,'L12','YEMA',311985,361902,202,'2025-07-01','2033-07-01'],[13,'L13','OLARTE Y AKLE LABORATORIOS',103638,120220,216.55,'2022-05-02','2027-05-01'],[14,'L14','AT&T',44100,51156,78.2,'2024-10-08','2027-10-01'],[15,'L15','EVERCIL',23807,27617,38,'2024-07-01','2028-06-30'],[16,'L16','THE BARBER SPA',19423,22530,30,'2024-08-01','2027-08-01'],[17,'L17','WAX REVOLUTION',54742,63500,80,'2022-01-01','2027-12-31'],[18,'L18','TOYS IN THE BOX',21030,24395,35.02,'2024-10-01','2027-10-01'],[19,'L19','VACIO',24000,27840,38,'2026-02-01','2028-02-01'],[20,'L20','MERAKI',12207,14160,15,'2023-05-01','2027-05-01'],[21,'L21','ASTRO BIKER',34483,40000,60,'2024-02-08','2027-02-08'],[22,'L22','SOUNDEX',41956,48669,76,'2024-05-01','2027-04-30'],[23,'L23','BEAUTY & THERAPY',28426,32974,38,'2022-07-06','2027-07-05'],[24,'L24','COOKIE DOH',21780,25265,29,'2026-03-01','2028-03-01'],[25,'L25','MISSINK (LASER TATOO REMOVAL)',22081,25613,35.2,'2025-02-10','2028-02-09'],[26,'L26','DAIKOKU',289082,335335,442,'2022-12-08','2027-06-07'],[27,'L27','NIU SUSHI',216889,251591,244.3,'2023-03-15','2028-03-14'],[28,'L28','OPTICAS AVANT 360',39663,46009,37.72,'2022-10-10','2027-10-10'],[29,'L29','LA MICHOACANA PLUS',74871,86851,118.43,'2023-04-27','2027-04-27'],[30,'L30','MARISQUERÍA DEL VALLE',213261,247383,299.14,'2022-10-03','2027-10-03'],[31,'L31','TAKOTL',166616,193274,253.26,'2023-01-24','2028-01-23'],[32,'L32','TORTAS NIZA',49511,57432,118.7,'2023-04-21','2027-04-20'],[33,'L33','MITU',65686,76196,93.04,'2023-04-13','2027-04-12'],[34,'L34','SIMPLEMENTE DELI',48368,56107,81.74,'2023-03-10','2027-03-09'],[35,'L35','SPUNTINO',324919,376906,427.39,'2022-10-31','2027-10-31'],[36,'L36','SNOOPY',396090,459464,93.61,'2026-02-01','2029-02-01'],[37,'L37','BELEKI',78240,90758,102.9,'2023-07-18','2027-07-18'],[38,'L38','ÓPTICAS TURATI',63890,74113,130,'2022-10-25','2027-10-24'],[39,'L39','TEDA COMERCIO',22338,25912,24.39,'2025-06-01','2027-06-01'],[40,'L40','OLIÉ FEEL THE ESSENCE',19482,22599,24.39,'2023-01-09','2027-01-08'],[41,'L41','CALOR HEAT',19482,22599,24.39,'2023-01-09','2027-01-08'],[42,'L42','SMART BAMBOO',19482,22599,24.39,'2023-01-09','2027-01-08'],[43,'L43','IDEAS',20565,23855,24.39,'2025-06-03','2027-06-03'],[44,'L44','MAXI BABY',38725,44921,48.78,'2022-11-23','2027-11-23'],[45,'L45','FLAVOR CUP',19482,22599,24.39,'2025-12-01','2027-12-01'],[46,'L46','WAL COMMERCE',19521,22645,24.39,'2023-06-21','2027-06-01'],[47,'L47','MR. PAX',19482,22599,24.39,'2023-01-13','2027-01-11'],[48,'L48','DERMALIA',58447,67798,73.17,'2023-02-01','2027-01-11'],[49,'L49','HELADOS VILLANOVA',19482,22599,24.39,'2022-12-08','2027-12-07'],[50,'L50','CASSAVA ROOTS',24912,28897,32.5,'2022-10-19','2026-10-19'],[51,'L51','THE LIMITED CO. GEEKSTORE',29696,34448,32.5,'2023-02-09','2027-02-08'],[52,'L52','SANTA CAGUAMA',17088,19822,38.38,'2023-01-19','2027-01-18'],[53,'L53','PISTA DE HIELO COYOACÁN',546586,634040,2126.17,'2023-06-01','2027-12-31'],[54,'L54','CAFETERÍA PISTA DE HIELO',11305,13114,10.7,'2023-10-06','2027-12-31'],[55,'L55','GO KART MANIA',250000,290000,1922.79,'2024-06-24','2029-06-24'],[56,'L56','PAWERFUL',70045,81252,150,'2023-04-11','2028-04-10'],[57,'L57','SOMBREROS TARDAN',17149,19893,14.75,'2025-02-26','2027-02-26'],[58,'L58','CHURRERIA PORFIRIO',13148,15252,7.5,'2025-04-23','2027-04-23'],[59,'L59','CRICKET LAND CANDY SHOP',11361,13653,7.5,'2026-06-01','2028-06-01'],[60,'L60','APPLE REPAIR',11361,13179,7.5,'2025-02-11','2028-02-11'],[61,'L61','SAKURA',17163,19909,14.75,'2025-03-20','2027-03-20'],[62,'L62','PURO VAPE',11370,13189,7.5,'2025-03-01','2027-03-20'],[63,'L63','BABY STYLE',13148,15252,7.5,'2025-03-18','2027-03-20'],[64,'L64','BOGG MX',13148,15252,7.5,'2025-04-30','2027-04-30'],[65,'L65','TIRAMISU',19847,23023,14.75,'2025-09-01','2027-09-01'],[66,'L66','ALORI',11370,13189,7.5,'2025-03-11','2027-03-20'],[67,'L67','DULCE PARAISO',11361,13179,7.5,'2025-02-25','2027-02-25'],[68,'L68','PIPOPE',13148,15252,7.5,'2025-05-14','2027-05-14'],[69,'L69','FORNO DE CARMEN',13148,15252,7.5,'2025-07-14','2027-07-14'],[70,'L70','ESTILO 10',11450,13282,7.5,'2025-02-01','2027-02-01'],[71,'L71','CHINGU',13148,15252,7.5,'2025-06-16','2027-06-16'],[72,'L72','STRAWBERRY ISLAND',17149,19893,14.75,'2025-02-19','2027-02-26'],[73,'L73','KEDMA',18170,21077,14.75,'2026-07-01','2028-09-01'],[74,'L74','POPOLBU',19847,23023,14.75,'2025-08-27','2027-08-27'],[75,'L75','VOGA',11450,13282,7.5,'2025-02-10','2027-02-10'],[76,'L76','THE JUMP SUPPLEMENTS',13148,15252,7.5,'2025-06-14','2027-06-14'],[77,'L77','LUCKY U!',17235,19993,14.75,'2025-02-10','2027-02-10'],[78,'L78','ELYSIA',13148,15252,7.5,'2024-07-11','2027-07-11'],[79,'L79','EESOM JOYERÍA',11418,13245,7.5,'2025-02-01','2027-02-01'],[80,'L80','CREPE',13148,15252,0,'2025-05-09','2027-05-09'],[81,'L81','BAKE CU',22916,26583,14.75,'2024-08-05','2027-08-05'],[82,'L82','KINETIC HEALTH',0,0,50,'2024-07-25','2026-07-25'],[83,'L83','CARRITOS MÁGICOS',20000,23200,20,'2026-03-01','2028-03-01'],[84,'ATM1','BANCOPPEL',8000,9280,1,'2023-11-01','2027-11-01'],[85,'ATM2','BANORTE',10000,11600,1,'2024-10-01','2027-10-01'],[86,'ATM3','MIFEL',1555,1804,1,'2024-02-02','2027-02-01'],[87,'S/N','CAR WASH',9430,10939,0,'2024-08-01','2027-08-01'],[88,'S/N','TOTEM',0,0,0,'2024-08-01','2025-08-01']];
+const today=new Date('2026-04-18');
+function ml(ds){const d=new Date(ds);return Math.round((d-today)/(1000*60*60*24*30.44));}
+function fd(ds){if(!ds)return'—';const d=new Date(ds);return`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;}
+// BUILD RENT ROLL
+const rrBody=document.getElementById('rr-body');
+RR.forEach(([no,local,nom,renta,tot,m2,fi,ff])=>{
+  const m=ml(ff);const vac=tot===0;
+  const sem=vac?'<span class="bd bn">—</span>':m<0?'<span class="bd br">⚫ Vencido</span>':m<6?`<span class="bd br">🔴 ${m}m urg.</span>`:m<12?`<span class="bd br">🔴 ${m}m</span>`:m<24?`<span class="bd ba">🟡 ${m}m</span>`:`<span class="bd bg">🟢 ${m}m</span>`;
+  const pxm2=m2>0?Math.round(renta/m2):0;
+  const tr=document.createElement('tr');
+  if(!vac&&m<12) tr.style.background='rgba(229,62,62,.04)';
+  tr.innerHTML=`<td style="color:var(--acc)">${no}</td><td style="font-weight:500">${nom}</td><td style="text-align:right;color:var(--t3)">${m2?m2.toLocaleString('es-MX',''):''}</td><td style="text-align:right">${vac?'—':fmt(renta)}</td><td style="text-align:right;font-weight:600;color:var(--gld)">${vac?'—':fmt(tot)}</td><td style="color:var(--t3)">${fd(fi)}</td><td>${fd(ff)}</td><td style="text-align:center;font-weight:600;color:${m<0?'var(--red)':m<12?'var(--red)':m<24?'var(--amb)':'var(--grn)'}">${m}</td><td>${sem}</td>`;
+  rrBody.appendChild(tr);
+});
+function fRR(v){document.querySelectorAll('#rr-body tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(v.toLowerCase())?'':'none';});}
+// BUILD ASTURIMART TABLE
+const astBody=document.getElementById('ast-body');
+RR.forEach(([no,local,nom,renta,tot,m2,fi,ff])=>{
+  const vac=tot===0;const m=ml(ff);
+  const color_ff=m<0?'var(--red)':m<12?'var(--red)':m<24?'var(--amb)':'var(--t3)';
+  const tr=document.createElement('tr');if(!vac&&m<12)tr.style.background='rgba(229,62,62,.03)';
+  tr.innerHTML=`<td style="color:var(--acc);font-weight:600">AST-${String(no).padStart(3,'0')}</td><td style="color:var(--t3)">${local}</td><td style="font-weight:500">${nom}</td><td style="text-align:right">${vac?'—':fmt(renta)}</td><td style="text-align:right;font-weight:600;color:var(--gld)">${vac?'—':fmt(tot)}</td><td style="text-align:right;color:var(--t3)">${m2||''}</td><td>${vac?'<span class="bd bn">—</span>':'<span class="bd bg">✓</span>'}</td><td>${vac?'<span class="bd bn">—</span>':'<span class="bd bg">✓</span>'}</td><td>${vac?'<span class="bd bn">—</span>':'<span class="bd bg">✓</span>'}</td><td>${vac?'<span class="bd bn">—</span>':'<span class="bd bb">◷</span>'}</td><td style="color:${color_ff};font-size:9px">${fd(ff)}</td>`;
+  astBody.appendChild(tr);
+});
+function fAST(v){document.querySelectorAll('#ast-body tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(v.toLowerCase())?'':'none';});}
+// BUILD CLIENTES
+const OTROS_NC=[['FVC','FVC-001','Hotel','HOTEL UMBRAL',945400,1096664],['FVC','FVC-002','Local','ATISBO POLANCO',129920,150707],['FVC','FVC-003','Local','EL CUBO CONCEPT STORE',122453,132249],['FVC','FVC-004','Local','GODA ALIMENTOS',104597,112965],['FVC','FVC-005','Varios','PAGARÉ/OTROS',193600,224576],['Parque Industrial','PI-1001','Industrial','UNEA Tijuana',991157,1149942],['Parque Industrial','PI-1002','Industrial','Mejoras UNEA TJ',180374,209234],['Parque Industrial','PI-1003','Industrial','UNEA Chihuahua',795218,922853],['Parque Industrial','PI-1004','Industrial','Mejoras UNEA CHI',164573,190905],['Parque Industrial','PI-1005','Industrial','AMERIKE',1450742,1682861],['Parque Industrial','PI-1006','Industrial','UVA Tijuana',891409,1034035],['Parque Industrial','PI-1007','Industrial','Ampl. UVA TJ',71166,82553],['Parque Industrial','PI-1008','Industrial','UVA Campeche',620156,719381],['Parque Industrial','PI-1009','Industrial','UVA Chetumal',506228,587224],['Parque Industrial','PI-1010','Industrial','UVA Playa del Carmen',538990,625229],['Parque Industrial','PI-1011','Industrial','UVA TEHUANTEPEC',477376,553956],['Parque Industrial','PI-1012','Industrial','UVA ROMA',1432900,1662164],['Parque Industrial','PI-1013','Comercial','NORM / FISO 4151',1589112,1843370],['Parque Industrial','PI-1014','Automotriz','PATIO VW',8024400,9308304],['Parque Industrial','PI-1015','Industrial','KOBREX',128557,149126],['Parque Industrial','PI-1017','Industrial','PCP',71680,83149],['Parque Industrial','PI-1018','Industrial','SIGMA',78138,90640],['Parque Industrial','PI-1020','Industrial','COSMÉTICOS MARAVILLA',180373,209233],['Parque Industrial','PI-1021','Industrial','MANUFACTURA MU 5000mts',416250,482850],['Parque Industrial','PI-1022','Industrial','MANUFACTURA MU 3000mts',249750,289710],['Parque Industrial','PI-1023','Industrial','GALVASID',382611,443829],['Parque Industrial','PI-1024','Industrial','GAOQUI',297829,345482],['Parque Industrial','PI-1025','Industrial','TSI',354350,411046],['CUU','CUU-1001','Coworking','LINKWORK',150500,174580],['CUU','CUU-1002','Servicios','COLOREARTE',8849,10265],['CUU','CUU-1003','Servicios','CHOPO',19295,22382],['CUU','CUU-1004','Fitness','GYM',82391,95574],['CUU','CUU-1005','Belleza','AMORE AMORE',6921,8029],['CUU','CUU-1006','Spa','SPA',9081,10534],['CUU','CUU-1007','Fitness','GYM 2.0',30881,35822],['Montes Urales','MU-001','Piso 1','TURBOFIN',329193,381864],['Montes Urales','MU-002','Piso 3','FLAMMA CORPORATION',61629,71490]];
+const ncBody=document.getElementById('nc-body');
+RR.forEach(([no,local,nom,renta,tot,m2,fi,ff])=>{
+  const vac=tot===0;const tr=document.createElement('tr');tr.setAttribute('data-p','Asturimart');
+  tr.innerHTML=`<td style="color:var(--acc);font-weight:600;white-space:nowrap">AST-${String(no).padStart(3,'0')}</td><td>Asturimart</td><td style="color:var(--t3)">${local}</td><td style="font-weight:500">${nom}</td><td style="text-align:right">${vac?'—':fmt(renta)}</td><td style="text-align:right;font-weight:600">${vac?'—':fmt(tot)}</td><td style="text-align:right;color:var(--t3)">${m2||'—'}</td><td style="color:var(--t3)">${fd(ff)}</td>`;
+  ncBody.appendChild(tr);
+});
+OTROS_NC.forEach(([prop,num,local,nom,renta,tot])=>{
+  const tr=document.createElement('tr');tr.setAttribute('data-p',prop);
+  tr.innerHTML=`<td style="color:var(--acc);font-weight:600;white-space:nowrap">${num}</td><td>${prop}</td><td style="color:var(--t3)">${local}</td><td style="font-weight:500">${nom}</td><td style="text-align:right">${fmt(renta)}</td><td style="text-align:right;font-weight:600">${fmt(tot)}</td><td style="text-align:right;color:var(--t3)">—</td><td style="color:var(--t3)">—</td>`;
+  ncBody.appendChild(tr);
+});
+function filterP(v){document.querySelectorAll('#nc-body tr').forEach(r=>{const p=r.getAttribute('data-p')||'';r.style.display=(!v||p.includes(v))?'':'none';});}
+function fNC(v){document.querySelectorAll('#nc-body tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(v.toLowerCase())?'':'none';});}
+// PARQUE INDUSTRIAL DATA
+const PI_DATA=[['PI-1001','UNEA Tijuana','Tijuana','Industrial',991157,991157,991157,991157,'$991,157 ✓','—','✓ Al corriente'],['PI-1002','Mejoras UNEA Tijuana','Tijuana','Industrial',180374,180374,180374,180374,'$180,374 ✓','—','✓ Al corriente'],['PI-1003','UNEA Chihuahua','Chihuahua','Industrial',795218,795218,795218,795218,'$795,218 ✓','—','✓ Al corriente'],['PI-1004','Mejoras UNEA Chihuahua','Chihuahua','Industrial',164573,164573,164573,164573,'$164,573 ✓','—','✓ Al corriente'],['PI-1005','AMERIKE','CDMX','Industrial',1399115,1399115,1450742,1450742,'$1,450,742 ✓','—','✓ Al corriente'],['PI-1006','UVA Tijuana','Tijuana','Industrial',891409,891409,891409,891409,'$891,409 ✓','—','✓ Al corriente'],['PI-1007','Ampliación UVA Tijuana','Tijuana','Industrial',71166,71166,71166,71166,'$71,166 ✓','—','✓ Al corriente'],['PI-1008','UVA Campeche','Campeche','Industrial',620156,620156,620156,620156,'$620,156 ✓','—','✓ Al corriente'],['PI-1009','UVA Chetumal','Chetumal','Industrial',506228,506228,506228,506228,'$506,228 ✓','—','✓ Al corriente'],['PI-1010','UVA Playa del Carmen','Playa del Carmen','Industrial',538990,538990,538990,538990,'$538,990 ✓','—','✓ Al corriente'],['PI-1011','UVA TEHUANTEPEC','Tehuantepec','Industrial',459942,459942,477376,477376,'$477,376 ✓','—','✓ Al corriente'],['PI-1012','UVA ROMA','CDMX','Industrial',1432900,1432900,1432900,1432900,'◷ Dentro de plazo','—','✓ Al corriente'],['PI-1013','NORM / FISO 4151','CDMX','Comercial',1539310,1584886,1584886,1589112,'◷ Dentro de plazo','—','✓ Al corriente'],['PI-1014','PATIO VW','CDMX','Automotriz',8024400,8024400,8024400,8024400,'◷ Dentro de plazo','—','✓ Al corriente'],['PI-1015','KOBREX','Industrial','Industrial',128557,128557,128557,128557,'$128,557 ✓','—','✓ Al corriente'],['PI-1016','VERITAS','Industrial','Industrial',0,'N/A','N/A','N/A','◷ Dentro de plazo','—','—'],['PI-1017','PCP','Industrial','Industrial',71680,71680,71680,71680,'◷ Dentro de plazo','—','✓ Al corriente'],['PI-1018','SIGMA','Industrial','Industrial',64630,64630,69400,78138,'$69,652 ✓','—','✓ Al corriente'],['PI-1019','EL SARDINERO','Industrial','Industrial',0,'N/A','N/A','N/A','◷ Dentro de plazo','—','—'],['PI-1020','COSMÉTICOS MARAVILLA','Industrial','Industrial',180373,180373,86207,114807,'$73,176 ⚠','$159,732','⚠ Adeudo parcial'],['PI-1021','MANUFACTURA MU 5000mts','Industrial','Industrial',416250,439632,421439,429493,'$440,644 ✓','—','✓ Al corriente'],['PI-1022','MANUFACTURA MU 3000mts','Industrial','Industrial',249750,261398,251459,259980,'◷ Dentro de plazo','—','✓ Al corriente'],['PI-1023','GALVASID','Industrial','Industrial',382611,382611,382611,382611,'$382,611 ✓','—','✓ Al corriente'],['PI-1024','GAOQUI','Industrial','Industrial',297829,271100,262039,268559,'$263,051 ✓','—','✓ Al corriente'],['PI-1025','TSI','Industrial','Industrial',354350,322086,322086,332058,'◷ Dentro de plazo','—','✓ Al corriente']];
+const piBody=document.getElementById('pi-body');
+PI_DATA.forEach(([num,nom,ciudad,seg,renta,ene,feb,mar,abr_st,adeudo,clasif])=>{
+  const tr=document.createElement('tr');const vac=renta===0;
+  const abr_cobrado=abr_st.includes('✓');const abr_plazo=abr_st.includes('plazo');const abr_adeudo=abr_st.includes('⚠');
+  const abr_color=abr_cobrado?'var(--grn)':abr_plazo?'var(--acc)':abr_adeudo?'var(--amb)':'var(--t3)';
+  const clasif_badge=clasif.includes('✓')?'<span class="bd bg">✓</span>':clasif.includes('⚠')?`<span class="bd ba">${clasif}</span>`:`<span class="bd bn">${clasif}</span>`;
+  tr.innerHTML=`<td style="color:var(--acc);font-weight:600">${num}</td><td style="font-weight:500">${nom}</td><td style="color:var(--t3)">${ciudad}</td><td style="text-align:right;font-weight:600">${vac?'—':fmt(renta)}</td><td style="text-align:right;color:var(--grn)">${vac?'—':fmt(ene)}</td><td style="text-align:right;color:var(--grn)">${vac?'—':fmt(feb)}</td><td style="text-align:right;color:var(--grn)">${vac?'—':fmt(mar)}</td><td style="text-align:right;color:${abr_color};font-weight:600">${abr_st}</td><td style="text-align:right;color:${adeudo!=='—'?'var(--amb)':'var(--grn)'}">${adeudo}</td><td>${clasif_badge}</td>`;
+  piBody.appendChild(tr);
+});
+const pit=document.createElement('tr');pit.className='ttl-r';
+pit.innerHTML=`<td colspan="3">TOTAL PARQUE INDUSTRIAL</td><td style="text-align:right;color:var(--gld)">$19,760,968</td><td style="text-align:right;color:var(--grn)">$19,782,581</td><td style="text-align:right;color:var(--grn)">$19,725,053</td><td style="text-align:right;color:var(--grn)">$19,799,684</td><td style="text-align:right;color:var(--amb);font-weight:600">$8,045,080</td><td></td><td></td>`;
+piBody.appendChild(pit);
+function fPI(v){document.querySelectorAll('#pi-body tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(v.toLowerCase())?'':'none';});}
+// FACTURAS DE HUGO
+const FACTURAS=[['FCI&P 1086','FCI&P','11/02/26','Febrero','mrajunov@ipm2.mx','Incremento'],['FCI&P 1087','FCI&P','11/02/26','Febrero','mrajunov@ipm2.mx','Incremento'],['FCI&P 1088','FCI&P','11/02/26','Febrero','mrajunov@ipm2.mx','Incremento'],['FCI&P 1089','FCI&P','11/02/26','Febrero','mrajunov@ipm2.mx',''],['FCI&P 1090','FCI&P','11/02/26','Febrero','mrajunov@ipm2.mx',''],['FCI&P 1091','FCI&P','11/02/26','Febrero','mrajunov@ipm2.mx','AMORE AMORE'],['FCI&P 1092','FCI&P','11/02/26','Febrero','mrajunov@ipm2.mx',''],['FCI&P 1093','FCI&P','11/02/26','Febrero','mrajunov@ipm2.mx','PAWERFUL'],['FCI&P 1094','FCI&P','11/02/26','Febrero','mrajunov@ipm2.mx','Varios locatarios'],['FCI&P 1095','FCI&P','11/02/26','Febrero','mrajunov@ipm2.mx',''],['FCI&P 1096','FCI&P','11/02/26','Febrero','mrajunov@ipm2.mx',''],['FCI&P 1097','FCI&P','11/02/26','Febrero','mrajunov@ipm2.mx',''],['FCI&P 1098','FCI&P','11/02/26','Febrero','mrajunov@ipm2.mx','SIGMA'],['M 4737','M','11/02/26','Febrero','mrajunov@ipm2.mx','Incremento'],['M 4738','M','11/02/26','Febrero','mrajunov@ipm2.mx','Incremento'],['M 4739','M','11/02/26','Febrero','mrajunov@ipm2.mx','Incremento'],['M 4760','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4761','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4762','M','11/02/26','Febrero','mrajunov@ipm2.mx','DAIKOKU'],['M 4763','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4764','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4765','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4766','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4767','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4768','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4769','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4770','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4771','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4772','M','11/02/26','Febrero','mrajunov@ipm2.mx','TORTAS NIZA'],['M 4773','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4774','M','11/02/26','Febrero','mrajunov@ipm2.mx','ÓPTICAS TURATI'],['M 4775','M','11/02/26','Febrero','mrajunov@ipm2.mx','Varios'],['M 4776','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4777','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4778','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4779','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4780','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['M 4781','M','11/02/26','Febrero','mrajunov@ipm2.mx',''],['FCI&P 1132','FCI&P','06/03/26','Marzo','mrajunov@ipm2.mx','Varios locatarios'],['FCI&P 1133','FCI&P','06/03/26','Marzo','mrajunov@ipm2.mx','PAWERFUL'],['FCI&P 1134','FCI&P','06/03/26','Marzo','mrajunov@ipm2.mx',''],['FCI&P 1135','FCI&P','06/03/26','Marzo','mrajunov@ipm2.mx','AMORE AMORE'],['FCI&P 1136','FCI&P','06/03/26','Marzo','mrajunov@ipm2.mx',''],['FCI&P 1138','FCI&P','10/03/26','Marzo','mrajunov@ipm2.mx','Incremento'],['FCI&P 1139','FCI&P','10/03/26','Marzo','mrajunov@ipm2.mx','Incremento'],['FCI&P 1142','FCI&P','18/03/26','Marzo','mrajunov@ipm2.mx',''],['FCI&P 1143','FCI&P','18/03/26','Marzo','mrajunov@ipm2.mx',''],['FCI&P 1144','FCI&P','18/03/26','Marzo','mrajunov@ipm2.mx',''],['FCI&P 1145','FCI&P','18/03/26','Marzo','mrajunov@ipm2.mx','SIGMA'],['M 4803','M','05/03/26','Marzo','mrajunov@ipm2.mx','ASTRO BIKER'],['M 4872','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4873','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4874','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4875','M','06/03/26','Marzo','mrajunov@ipm2.mx','DAIKOKU'],['M 4876','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4877','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4878','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4879','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4880','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4881','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4882','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4883','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4884','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4885','M','06/03/26','Marzo','mrajunov@ipm2.mx','TORTAS NIZA'],['M 4886','M','06/03/26','Marzo','mrajunov@ipm2.mx','LUZ'],['M 4887','M','06/03/26','Marzo','mrajunov@ipm2.mx','ÓPTICAS TURATI'],['M 4888','M','06/03/26','Marzo','mrajunov@ipm2.mx','Varios'],['M 4889','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4890','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4891','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4892','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4893','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4894','M','06/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4896','M','10/03/26','Marzo','mrajunov@ipm2.mx','Incremento'],['M 4897','M','10/03/26','Marzo','mrajunov@ipm2.mx','Incremento'],['M 4898','M','10/03/26','Marzo','mrajunov@ipm2.mx','Incremento'],['M 4899','M','10/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4900','M','10/03/26','Marzo','mrajunov@ipm2.mx',''],['M 4902','M','18/03/26','Marzo','mrajunov@ipm2.mx','LUZ'],['F 323','F','12/03/26','Marzo','mrajunov@ipm2.mx','EL CUBO CONCEPT STORE · RFC CCS2010224GA'],['F 328','F','01/04/26','Abril','mrajunov@ipm2.mx','EL CUBO CONCEPT STORE · RFC CCS2010224GA'],['FCI&P 1172','FCI&P','01/04/26','Abril','mrajunov@ipm2.mx',''],['FCI&P 1176','FCI&P','01/04/26','Abril','mrajunov@ipm2.mx',''],['FCI&P 1182','FCI&P','10/04/26','Abril','mrajunov@ipm2.mx',''],['FCI&P 1183','FCI&P','10/04/26','Abril','mrajunov@ipm2.mx',''],['FCI&P 1184','FCI&P','10/04/26','Abril','mrajunov@ipm2.mx','AMORE AMORE'],['FCI&P 1185','FCI&P','10/04/26','Abril','mrajunov@ipm2.mx',''],['FCI&P 1187','FCI&P','10/04/26','Abril','mrajunov@ipm2.mx','PAWERFUL'],['FCI&P 1188','FCI&P','10/04/26','Abril','mrajunov@ipm2.mx','Varios'],['FCI&P 1189','FCI&P','13/04/26','Abril','mrajunov@ipm2.mx','LUZ'],['FCI&P 1190','FCI&P','13/04/26','Abril','mrajunov@ipm2.mx','LUZ'],['FCI&P 1191','FCI&P','13/04/26','Abril','mrajunov@ipm2.mx','LUZ'],['FCI&P 1192','FCI&P','13/04/26','Abril','mrajunov@ipm2.mx','LUZ'],['FCI&P 1193','FCI&P','13/04/26','Abril','mrajunov@ipm2.mx','SIGMA'],['M 4984','M','13/04/26','Abril','mrajunov@ipm2.mx','Incremento'],['M 4985','M','13/04/26','Abril','mrajunov@ipm2.mx','Incremento'],['M 4986','M','13/04/26','Abril','mrajunov@ipm2.mx','TORTAS NIZA'],['M 4987','M','13/04/26','Abril','mrajunov@ipm2.mx','Incremento'],['M 4988','M','13/04/26','Abril','mrajunov@ipm2.mx','Incremento']];
+const facBody=document.getElementById('fac-body');
+let prevMes='';
+FACTURAS.forEach(([num,serie,fecha,mes,dest,nota])=>{
+  if(mes!==prevMes){const gh=document.createElement('tr');gh.className='grp-hdr';const mc=mes==='Febrero'?'var(--grn)':mes==='Marzo'?'var(--grn)':'var(--amb)';gh.innerHTML=`<td colspan="6" style="color:${mc}">${mes} 2026 · ${FACTURAS.filter(f=>f[3]===mes).length} facturas</td>`;facBody.appendChild(gh);prevMes=mes;}
+  const tr=document.createElement('tr');const sc=serie==='F'?'var(--grn)':serie==='FCI&P'?'var(--acc)':'var(--amb)';
+  tr.innerHTML=`<td style="font-weight:600;white-space:nowrap">${num}</td><td><span class="bd" style="background:rgba(75,142,241,.12);color:${sc}">${serie}</span></td><td style="color:var(--t3)">${fecha}</td><td>${mes}</td><td style="font-size:9px;color:var(--t3)">${dest}</td><td style="font-size:9px;color:var(--t2)">${nota||'Ver PDF adjunto'}</td>`;
+  facBody.appendChild(tr);
+});
+function fFac(v){document.querySelectorAll('#fac-body tr').forEach(r=>{if(r.classList.contains('grp-hdr'))return;r.style.display=r.textContent.toLowerCase().includes(v.toLowerCase())?'':'none';});}
+// INPC DATA
+const ID={
+  ene:[['Cielo Abierto','L17','WAX REVOLUTION',54741.52,56821.69,true],['Cielo Abierto','L31','TAKOTL',166615.58,172946.98,true],['Cielo Abierto','L40','OLIÉ FEEL THE ESSENCE',19482.20,20222.52,true],['Cielo Abierto','L41','CALOR HEAT',19482.20,20222.52,true],['Cielo Abierto','L42','SMART BAMBOO',19482.20,20222.52,true],['Cielo Abierto','L46','AKASHA/WAL COMMERCE',19482.20,20222.52,true],['Cielo Abierto','L47','MR. PAX',19482.20,20222.52,true],['Cielo Abierto','L52','SANTA CAGUAMA',17088.23,17737.58,true],['Parque Ind.','Lote 1,686','SIGMA 400',64630.02,67085.96,true],['Infraestructura','678 Xochicalco','AMERIKE_678',996169.71,1034024.16,true],['Infraestructura','681 Xochicalco','AMERIKE_681',235051.28,243983.23,true],['Infraestructura','693 Tajín','AMERIKE_693',167893.77,174273.73,true],['Infraestructura','Av. Cristóbal Colón','UNEA CHIHUAHUA',790700.33,820746.94,true],['CUU','Linkcenter','FIT GIMNASIO',82390.87,85521.72,true],['Montes Urales','Piso 3','M2 CORPORATIVO',287172.00,298084.54,true]],
+  feb:[['La Estación','L1','CITY CAFÉ',93321.00,96764.54,'KBE220208414'],['La Estación','L1B','SPORT CITY',1054662.33,1093579.37,'SCI011114UY7'],['La Estación','L4','SALUCITA',81390.98,84394.31,'OGR240704MB8'],['La Estación','L16','ASTRO BIKER',34482.76,35755.17,'VIAC930323R17'],['La Estación','L20B','MISSINK LASER TATOO',22080.56,22895.33,'PPG0610038B1'],['La Estación','L33','DERMALIA',58446.65,60603.33,'PPG0610038B1'],['La Estación','L38','THE LIMITED CO.',29696.36,30792.16,'FSP181206482'],['La Estación','L1a','SOMBREROS TARDAN',17149.48,17782.29,'TAPL6101297W3'],['La Estación','L5','APPLE REPAIR',11360.89,11780.11,'ROCD890907CM0'],['La Estación','L1b','SOMBREROS TARDAN (2)',17149.48,17782.29,'TAPL6101297W3'],['La Estación','L14','CUAC',11360.90,11780.12,'MOMB870119KK8'],['La Estación','L17','ESTILO 10',11449.95,11872.45,'MATC010505I6A'],['La Estación','L19','STRAWBERRY ISLAND',17149.48,17782.30,'OILI861207151'],['La Estación','L25','VOGA',11449.95,11872.45,'CARJ740227FR3'],['La Estación','L30','EESOM JOYERÍA',11417.87,11839.19,'PERC921229HD4'],['La Estación','ATM3','MIFEL',1555.35,1612.75,'BMI9312038R3'],['La Est./Puebla','NA','SPORT CITY PUEBLA',705092.00,731109.89,'SCI011114UY7']],
+  mar:[['Cielo Abierto','L27','NIU SUSHI',216888.63,225108.71,true],['Cielo Abierto','L34','SIMPLEMENTE DELI',48368.50,50201.67,true],['Cielo Abierto','L61','SAKURA',17162.71,17813.18,true],['Cielo Abierto','L62','PURO VAPE',11369.66,11800.57,false],['Cielo Abierto','L63','BABY STYLE',13148.00,13646.31,false],['Parque Ind.','Puebla','KJ BEAUTY_533',60776.91,63080.35,true],['Parque Ind.','Parq. Central','FIDEICOMISO 4151',1539310.34,1597650.21,true],['Infraestructura','Av. Alamar TJ','UNEA TIJUANA',1032899.30,1072046.18,true],['Infraestructura','Av. Alamar Adic.','UNEA TIJUANA ADIC.',187145.69,194238.51,true],['Infraestructura','Carr. Transístmica','UVA TEHUANTEPEC',484722.79,503093.79,true],['CUU','Linkcenter','GIMNASIO 2',28073.60,29137.59,true],['CUU','Linkcenter L4','AMORE AMORE',7089.00,7357.67,true],['Montes Urales','Piso 1','TURBOFIN',329192.68,341669.08,true],['Montes Urales','Piso 3','FLAMMA CORPORATION',61628.52,63964.24,true]],
+  abr:[['Cielo Abierto','L4','EL CAMARÓN BUCHÓN',218499.80,227283.49,false],['Cielo Abierto','L6','EXE CENTRO CAMBIARIO',22812.31,23729.36,false],['Cielo Abierto','L29','LA MICHOACANA PLUS',74871.45,77881.28,false],['Cielo Abierto','L32','TORTAS NIZA',49510.54,51500.86,false],['Cielo Abierto','L33','MITU',65686.15,68326.73,false],['Cielo Abierto','L56','PAWERFUL',70044.75,72860.55,false],['Cielo Abierto','L58','CHURRERIA PORFIRIO',13147.88,13676.42,false],['Cielo Abierto','L64','BOGG MX',13147.88,13676.42,false],['Parque Ind.','Puebla','KJ BEAUTY_533',null,null,false],['Parque Ind.','Parq. Central','FIDEICOMISO 4151',null,null,false],['Infraestructura','Av. Alamar TJ','UNEA TIJUANA',1032899.30,1074421.85,false],['Infraestructura','Av. Alamar Adic.','UNEA TIJUANA ADIC.',187145.69,194668.94,false],['Infraestructura','Carr. Transístmica','UVA TEHUANTEPEC',484722.79,504208.65,false],['CUU','Linkcenter','GIMNASIO 2',null,null,false],['CUU','Linkcenter L4','AMORE AMORE',null,null,false],['Montes Urales','Piso 1','TURBOFIN',329192.68,342426.23,false],['Montes Urales','Piso 3','FLAMMA CORPORATION',61628.52,64105.99,false]]
+};
+const MC={ene:'var(--acc)',feb:'var(--grn)',mar:'var(--grn)',abr:'var(--amb)'};
+const MN={ene:'Enero 2026',feb:'Febrero 2026',mar:'Marzo 2026',abr:'Abril 2026'};
+function buildITab(id){
+  const b=document.getElementById('ib-'+id);if(!b)return;
+  const isFeb=(id==='feb'),isAbr=(id==='abr');
+  let tA=0,tN=0;
+  ID[id].forEach((r,i)=>{
+    const[prop,local,cli,ant,nv,...rest]=r;
+    const cobr=isFeb?true:rest[0];const rfc=isFeb?rest[0]:null;
+    const diff=ant&&nv?nv-ant:null;if(diff){tA+=ant;tN+=nv;}
+    const st=!ant?'<span class="bd br">⚠</span>':cobr?'<span class="bd bg">✓ Cobrado</span>':isAbr?'<span class="bd bb">◷</span>':'<span class="bd ba">Pend.</span>';
+    const tr=document.createElement('tr');
+    if(isFeb) tr.innerHTML=`<td style="color:var(--t3);text-align:center">${i+1}</td><td style="color:var(--t3)">${local}</td><td style="font-weight:500">${cli}</td><td style="font-size:8px;color:var(--t3)">${rfc||''}</td><td style="text-align:right">${ant?fmt2(ant):'—'}</td><td style="text-align:right;color:var(--grn);font-weight:600">${nv?fmt2(nv):'—'}</td><td style="text-align:right;color:var(--tel);font-weight:600">${diff?'+'+fmt(diff):'—'}</td><td style="text-align:right;color:var(--gld)">${diff?fmt(diff*12):'—'}</td>`;
+    else if(isAbr) tr.innerHTML=`<td style="color:var(--t3);text-align:center">${i+1}</td><td style="color:var(--t3)">${prop}</td><td style="color:var(--t3)">${local}</td><td style="font-weight:500">${cli}</td><td style="text-align:right">${ant?fmt2(ant):'—'}</td><td style="text-align:right;color:var(--grn)">${nv?fmt2(nv):'—'}</td><td style="text-align:right;color:var(--tel)">${diff?'+'+fmt(diff):'—'}</td><td>${st}</td>`;
+    else tr.innerHTML=`<td style="color:var(--t3);text-align:center">${i+1}</td><td style="color:var(--t3)">${prop}</td><td style="color:var(--t3)">${local}</td><td style="font-weight:500">${cli}</td><td style="text-align:right">${ant?fmt2(ant):'—'}</td><td style="text-align:right;color:var(--grn);font-weight:600">${nv?fmt2(nv):'—'}</td><td style="text-align:right;color:var(--tel);font-weight:600">${diff?'+'+fmt(diff):'—'}</td><td style="text-align:right;color:var(--gld)">${diff?fmt(diff*12):'—'}</td>`;
+    b.appendChild(tr);
+  });
+  const tot=document.createElement('tr');tot.className='ttl-r';const d=tN-tA;
+  tot.innerHTML=`<td colspan="3" style="padding:5px 7px">TOTAL ${MN[id].toUpperCase()}</td><td style="text-align:right">${fmt2(tA)}</td><td style="text-align:right;color:var(--grn)">${fmt2(tN)}</td><td style="text-align:right;color:var(--tel)">+${fmt(d)}</td>${isFeb?`<td style="text-align:right;color:var(--gld)">${fmt(d*12)}</td>`:'<td></td>'}<td></td>`;
+  b.appendChild(tot);
+}
+buildITab('ene');buildITab('feb');buildITab('mar');buildITab('abr');
+function buildAll(){
+  const b=document.getElementById('ib-all');if(!b)return;
+  ['ene','feb','mar','abr'].forEach(id=>{
+    const d=ID[id].filter(r=>r[3]&&r[4]).reduce((s,r)=>s+(r[4]-r[3]),0);
+    const gh=document.createElement('tr');gh.className='grp-hdr';
+    gh.innerHTML=`<td colspan="9" style="color:${MC[id]}">${MN[id]} · ${ID[id].length} locatarios · +${fmt(d)}/mes · +${fmt(d*12)}/año${id==='feb'?' · ✅ TODOS COBRADOS · RFC confirmados':''}</td>`;
+    b.appendChild(gh);
+    ID[id].forEach(([prop,local,cli,ant,nv,...rest])=>{
+      const cobr=id==='feb'?true:rest[0];const diff=ant&&nv?nv-ant:null;
+      const st=!ant?'<span class="bd br">⚠</span>':cobr?'<span class="bd bg">✓</span>':id==='abr'?'<span class="bd bb">◷</span>':'<span class="bd ba">P</span>';
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td style="color:${MC[id]};font-size:9px">${MN[id].split(' ')[0]}</td><td style="color:var(--t3)">${prop}</td><td style="color:var(--t3)">${local}</td><td style="font-weight:500">${cli}</td><td style="text-align:right">${ant?fmt2(ant):'—'}</td><td style="text-align:right;color:var(--grn);font-weight:600">${nv?fmt2(nv):'—'}</td><td style="text-align:right;color:var(--tel);font-weight:600">${diff?'+'+fmt(diff):'—'}</td><td style="text-align:right;color:var(--gld)">${diff?fmt(diff*12):'—'}</td><td>${st}</td>`;
+      b.appendChild(tr);
+    });
+  });
+}
+buildAll();
+function fI(v){document.querySelectorAll('#ib-all tr').forEach(r=>{if(r.classList.contains('grp-hdr'))return;r.style.display=r.textContent.toLowerCase().includes(v.toLowerCase())?'':'none';});}
+function recI(){
+  const pp={ene:parseFloat(document.getElementById('pe')?.value)/100||.038,feb:parseFloat(document.getElementById('pf')?.value)/100||.0369,mar:parseFloat(document.getElementById('pm')?.value)/100||.0379,abr:parseFloat(document.getElementById('pa')?.value)/100||.0402};
+  let tot=0;
+  ['ene','feb','mar','abr'].forEach((id,i)=>{const d=ID[id].filter(r=>r[3]).reduce((s,r)=>s+r[3]*pp[id],0);tot+=d;document.getElementById(['re','rf','rm','ra'][i]).textContent=fmt(d);});
+  document.getElementById('it').textContent=fmt(tot);document.getElementById('ia').textContent=fmt(tot*12);
+}
+// ── COBRANZA CIELO ABIERTO ──
+// Listado preliminar de locatarios identificados positivamente como Cielo Abierto (fuente: data INPC 2026).
+// Montos ENE-MAR asumen 100% cobrado según consolidado. ABR: pagado si está marcado como cobrado en INPC abril, pendiente en otro caso.
+// TODO: validar lista completa y montos reales con Google Sheet "dashboard asturimart".
+// Formato: [num, local, locatario, presup/mes, nueva renta con INPC aplicado, abr_pagado]
+const CA=[
+  [4,'L4','EL CAMARÓN BUCHÓN',218500,227283,false],
+  [6,'L6','EXE CENTRO CAMBIARIO',22812,23729,false],
+  [17,'L17','WAX REVOLUTION',54742,56822,true],
+  [27,'L27','NIU SUSHI',216889,225109,true],
+  [29,'L29','LA MICHOACANA PLUS',74871,77881,false],
+  [31,'L31','TAKOTL',166616,172947,true],
+  [32,'L32','TORTAS NIZA',49511,51501,false],
+  [33,'L33','MITU',65686,68327,false],
+  [34,'L34','SIMPLEMENTE DELI',48368,50202,true],
+  [40,'L40','OLIÉ FEEL THE ESSENCE',19482,20223,true],
+  [41,'L41','CALOR HEAT',19482,20223,true],
+  [42,'L42','SMART BAMBOO',19482,20223,true],
+  [46,'L46','AKASHA / WAL COMMERCE',19482,20223,true],
+  [47,'L47','MR. PAX',19482,20223,true],
+  [52,'L52','SANTA CAGUAMA',17088,17738,true],
+  [56,'L56','PAWERFUL',70045,72861,false],
+  [58,'L58','CHURRERIA PORFIRIO',13148,13676,false],
+  [61,'L61','SAKURA',17163,17813,true],
+  [62,'L62','PURO VAPE',11370,11801,false],
+  [63,'L63','BABY STYLE',13148,13646,false],
+  [64,'L64','BOGG MX',13148,13676,false]
+];
+function buildCA(){
+  const anio=document.getElementById('ca-anio-body');
+  const abr=document.getElementById('ca-abr-body');
+  if(!anio||!abr)return;
+  let tPres=0,tAbrPag=0,tAbrPen=0,nPag=0,nPen=0;
+  CA.forEach(([n,loc,cli,pres,nv,pag])=>{
+    // ENE-FEB: presupuesto anterior (pre-INPC); MAR-ABR: nueva renta post-INPC. Asumido 100% ENE-MAR.
+    const ene=pres,feb=pres,mar=nv,abrAmt=pag?nv:0,pend=pag?0:nv;
+    const acum=ene+feb+mar+abrAmt;
+    tPres+=nv;
+    if(pag){tAbrPag+=nv;nPag++;}else{tAbrPen+=nv;nPen++;}
+    // Tabla anual
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td style="color:var(--t3);text-align:center">${n}</td><td style="color:var(--t3)">${loc}</td><td style="font-weight:500">${cli}</td><td style="text-align:right">${fmt(nv)}</td><td style="text-align:right;color:var(--grn)">${fmt(ene)}</td><td style="text-align:right;color:var(--grn)">${fmt(feb)}</td><td style="text-align:right;color:var(--grn)">${fmt(mar)}</td><td style="text-align:right;color:${pag?'var(--grn)':'var(--amb)'};font-weight:${pag?'600':'400'}">${pag?fmt(abrAmt):'◷ Plazo'}</td><td style="text-align:right;color:var(--gld);font-weight:600">${fmt(acum)}</td>`;
+    anio.appendChild(tr);
+    // Tabla abril
+    const tr2=document.createElement('tr');
+    const st=pag?'<span class="bd bg">✓ Pagado</span>':'<span class="bd bb">◷ En plazo</span>';
+    tr2.innerHTML=`<td style="color:var(--t3);text-align:center">${n}</td><td style="color:var(--t3)">${loc}</td><td style="font-weight:500">${cli}</td><td style="text-align:right;font-weight:600">${fmt(nv)}</td><td>${st}</td><td style="text-align:right;color:var(--grn)">${pag?fmt(nv):'—'}</td><td style="text-align:right;color:${pag?'var(--t3)':'var(--amb)'}">${pag?'—':fmt(nv)}</td>`;
+    abr.appendChild(tr2);
+  });
+  // Totales tabla anual
+  const tT=tPres*4; // aproximación: presup*4 meses (los primeros 2 al anterior y 2 al nuevo dan similar)
+  const tot=document.createElement('tr');tot.className='ttl-r';
+  const totAcum=CA.reduce((s,r)=>{const[,,,pres,nv,pag]=r;return s+pres+pres+nv+(pag?nv:0);},0);
+  tot.innerHTML=`<td colspan="3" style="padding:5px 7px">TOTAL CIELO ABIERTO (21 locatarios)</td><td style="text-align:right;color:var(--gld)">${fmt(tPres)}</td><td style="text-align:right;color:var(--grn)">${fmt(CA.reduce((s,r)=>s+r[3],0))}</td><td style="text-align:right;color:var(--grn)">${fmt(CA.reduce((s,r)=>s+r[3],0))}</td><td style="text-align:right;color:var(--grn)">${fmt(tPres)}</td><td style="text-align:right;color:var(--grn)">${fmt(tAbrPag)}</td><td style="text-align:right;color:var(--gld);font-weight:600">${fmt(totAcum)}</td>`;
+  anio.appendChild(tot);
+  // Totales tabla abril
+  const tot2=document.createElement('tr');tot2.className='ttl-r';
+  tot2.innerHTML=`<td colspan="3">TOTAL ABRIL 2026</td><td style="text-align:right;color:var(--gld)">${fmt(tPres)}</td><td></td><td style="text-align:right;color:var(--grn)">${fmt(tAbrPag)}</td><td style="text-align:right;color:var(--amb)">${fmt(tAbrPen)}</td>`;
+  abr.appendChild(tot2);
+  // KPIs
+  const pct=tPres?Math.round(tAbrPag/tPres*100):0;
+  document.getElementById('ca-kpre').textContent=fmt(tPres);
+  document.getElementById('ca-kene').textContent=fmt(CA.reduce((s,r)=>s+r[3],0));
+  document.getElementById('ca-kabr').textContent=fmt(tAbrPag);
+  document.getElementById('ca-kpct').textContent=pct+'% · '+nPag+' de '+CA.length+' pagados';
+  document.getElementById('ca-abr-pag').textContent=fmt(tAbrPag);
+  document.getElementById('ca-abr-npag').textContent=nPag+' locatarios';
+  document.getElementById('ca-abr-pen').textContent=fmt(tAbrPen);
+  document.getElementById('ca-abr-npen').textContent=nPen+' locatarios · en plazo';
+  document.getElementById('ca-abr-tot').textContent=fmt(tPres);
+}
+buildCA();
+function caTab(el,id){document.querySelectorAll('#pg-cobrca .itab').forEach(t=>t.classList.remove('on'));el.classList.add('on');document.querySelectorAll('#pg-cobrca .casec').forEach(s=>s.classList.remove('on'));document.getElementById('cs-'+id)?.classList.add('on');}
+function fCA(sec,v){const id=sec==='anio'?'ca-anio-body':sec==='abr'?'ca-abr-body':'ca-atr-body';document.querySelectorAll('#'+id+' tr').forEach(r=>{if(r.classList.contains('ttl-r'))return;r.style.display=r.textContent.toLowerCase().includes(v.toLowerCase())?'':'none';});}
+</script></body></html>
