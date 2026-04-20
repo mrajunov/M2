@@ -565,26 +565,14 @@ function fCA(sec,v){const id=sec==='anio'?'ca-anio-body':sec==='abr'?'ca-abr-bod
 </script>
 </script>
 
-<script>
-window.addEventListener("load", function () {
-
-console.log("ARRANCÓ SCRIPT");
-
-fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vTNHH_UgZleomJFm-ESJvS7O-83RBCXy6scP9W9TKXNyMoRPdcTaD7wqAdv723dwfVRKMzBqAVq02Bb/pub?gid=51138493&single=true&output=csv")
-.then(res => {
-  console.log("STATUS:", res.status);
-  return res.text();
-})
-.then(data => {
-  console.log("DATA RECIBIDA");
-  console.log(data.slice(0,200)); // solo muestra un pedazo
-})
-.catch(err => {
-  console.error("ERROR:", err);
-});
-
-});
 </script>
+
+<script>
+alert("SI VES ESTO, EL SCRIPT FUNCIONA");
+</script>
+
+</body>
+</html>
 
 </body>
 </html>
